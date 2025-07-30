@@ -40,4 +40,26 @@
     </form>
   </div>
 
-  <div id="slip" style="display:none; margin-top: 30px; backgrou
+  <div id="slip" style="display:none; margin-top: 30px; background: white; padding: 20px; border: 1px solid #ccc;">
+    <img src="assets/logo.png" width="100"><br>
+    <h2 style="color:#05488c;">AlphaMed</h2>
+    <p style="color:#45b649;">CLINICAL LABORATORY</p>
+    <hr>
+    <p><b>Name:</b> <span id="s_name"></span></p>
+    <p><b>Father:</b> <span id="s_father"></span></p>
+    <p><b>CNIC:</b> <span id="s_cnic"></span></p>
+    <p><b>Phone:</b> <span id="s_phone"></span></p>
+    <p><b>DOB:</b> <span id="s_dob"></span></p>
+    <p><b>MRN:</b> <span id="s_mrn"></span></p>
+    <p><b>Sample No:</b> <span id="s_sample"></span></p>
+    <p><b>Tests:</b> <span id="s_tests"></span></p>
+    <p><b>Total:</b> Rs. <span id="s_total"></span></p>
+    <p><b>Discount:</b> <span id="s_discount"></span>%</p>
+    <p><b>Payable:</b> Rs. <span id="s_final"></span></p>
+    <div id="qrcode"></div>
+    <button onclick="window.print()">Print Slip</button>
+  </div>
+
+  <script src="js/receptionist.js"></script>
+</body>
+</html>
