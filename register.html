@@ -1,0 +1,43 @@
+<!-- register.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register Patient - AlphaMed</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="qr/qr-code.min.js"></script>
+</head>
+<body>
+  <div class="login-box">
+    <h2>Register New Patient</h2>
+    <form id="registerForm" onsubmit="return registerPatient()">
+      <input type="text" id="name" placeholder="Patient Name" required>
+      <input type="text" id="father" placeholder="Father Name / S/o" required>
+      <input type="text" id="cnic" placeholder="CNIC" required>
+      <input type="text" id="phone" placeholder="Phone No" required>
+      <input type="date" id="dob" required>
+
+      <select id="department" onchange="loadTests()" required>
+        <option value="">Select Department</option>
+        <option value="Hematology">Hematology</option>
+        <option value="Serology">Serology</option>
+        <option value="Histopathology">Histopathology</option>
+        <option value="Microbiology">Microbiology</option>
+        <option value="Biochemistry">Biochemistry</option>
+        <option value="Culture Tests">Culture Tests</option>
+        <option value="Special Chemistry">Special Chemistry</option>
+        <option value="Molecular Biology">Molecular Biology</option>
+        <option value="Blood Banking">Blood Banking</option>
+      </select>
+
+      <div id="testList"></div>
+
+      <input type="number" id="discount" placeholder="Discount %" value="10">
+      <h4>Total: Rs. <span id="total">0</span></h4>
+      <h4>Final Amount: Rs. <span id="final">0</span></h4>
+
+      <button type="submit">Generate Slip</button>
+    </form>
+  </div>
+
+  <div id="slip" style="display:none; margin-top: 30px; backgrou
