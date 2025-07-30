@@ -1,1 +1,1 @@
-// JS placeholder
+// receptionist.js content

@@ -1,1 +1,1 @@
-<?php session_start(); $cnic=$_POST['cnic']; $pass=$_POST['password']; if($cnic=='12345' && $pass=='test'){ $_SESSION['user']='receptionist'; header('Location: receptionist.html'); } else { echo 'Login failed'; } ?>
+<?php // login.php content ?>
