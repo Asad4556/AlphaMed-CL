@@ -1,0 +1,27 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AlphaMed - Login</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="login-box">
+    <img src="assets/logo.png" class="logo">
+    <h2>AlphaMed</h2>
+    <p>CLINICAL LABORATORY</p>
+    <form onsubmit="return login()">
+      <input type="text" id="username" placeholder="Username" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <select id="role" required>
+        <option value="">Select Role</option>
+        <option value="receptionist">Receptionist</option>
+        <option value="technologist">Lab Technologist</option>
+      </select>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+  <script src="js/login.js"></script>
+</body>
+</html>
