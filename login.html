@@ -1,51 +1,42 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Alpha-Med Clinical Lab - Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lab Login</title>
   <style>
     body {
-      background: #f5f5f5;
       font-family: Arial, sans-serif;
+      background: #f0f0f0;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       height: 100vh;
     }
     .login-box {
       background: white;
-      padding: 30px;
+      padding: 40px;
       border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
-      text-align: center;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
-    input {
+    input, button {
       display: block;
       width: 100%;
-      margin: 15px 0;
+      margin-top: 10px;
       padding: 10px;
       font-size: 16px;
     }
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      background: #009879;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #007d65;
+    h2 {
+      text-align: center;
     }
   </style>
 </head>
 <body>
   <div class="login-box">
-    <h2>Alpha-Med Lab Login</h2>
+    <h2>Admin Login</h2>
     <form onsubmit="return loginUser()">
-      <input type="text" id="cnic" placeholder="Enter CNIC (xxxxx-xxxxxxx-x)" required />
+      <input type="text" id="cnic" placeholder="Enter CNIC" required />
       <input type="password" id="password" placeholder="Enter Password" required />
       <button type="submit">Login</button>
     </form>
@@ -53,17 +44,16 @@
 
   <script>
     function loginUser() {
-      const cnic = document.getElementById("cnic").value;
+      const cnic = document.getElementById("cnic").value.trim();
       const password = document.getElementById("password").value;
 
-      // Hardcoded Admin Credentials
       if (cnic === "34501-8971113-8" && password === "Admin@2723") {
-        window.location.href = "dashboard.html"; // No 405, just JS redirect
+        localStorage.setItem("loggedIn", "true");
+        window.location.href = "dashboard.html";
       } else {
-        alert("Invalid CNIC or Password");
+        alert("Invalid CNIC or Password!");
       }
-
-      return false; // prevent form submission
+      return false;
     }
   </script>
 </body>
