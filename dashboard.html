@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Patient Entry - AlphaMed Lab</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .form-box {
+      max-width: 900px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #bbb;
+    }
+    .form-box h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    input, select {
+      padding: 10px;
+      margin: 10px 0;
+      width: 100%;
+    }
+    .btn {
+      background: green;
+      color: white;
+      padding: 10px;
+      border: none;
+      width: 100%;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .departments {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .departments label {
+      width: 30%;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-box">
+    <h2>Patient Information</h2>
+    <form action="tests.html" method="post" onsubmit="return saveData()">
+      <input type="text" id="pname" placeholder="Patient Name" required>
+      <input type="text" id="fso" placeholder="Father/Son Of/W/o" required>
+      <input type="text" id="sample" placeholder="Sample Number" required>
+      <input type="text" id="cnic" placeholder="CNIC" required>
+      <input type="number" id="age" placeholder="Age" required>
+      <input type="text" id="contact" placeholder="Contact Number" required>
+
+      <h3>Select Departments</h3>
+      <div class="departments">
+        <label><input type="checkbox" value="Hematology"> Hematology</label>
+        <label><input type="checkbox" value="Serology"> Serology</label>
+        <label><input type="checkbox" value="Histopathology"> Histopathology</label>
+        <label><input type="checkbox" value="Microbiology"> Microbiology</label>
+        <label><input type="checkbox" value="Biochemistry"> Biochemistry</label>
+        <label><input type="checkbox" value="Culture Tests"> Culture Tests</label>
+        <label><input type="checkbox" value="Special Chemistry"> Special Chemistry</label>
+        <label><input type="checkbox" value="Molecular Biology"> Molecular Biology</label>
+        <label><input type="checkbox" value="Blood Banking"> Blood Banking</label>
+      </div>
+
+      <button type="submit" class="btn">Next → Enter Test Results</button>
+    </form>
+  </div>
+
+  <script>
+    function saveData() {
+      const fields = ['pname', 'fso', 'sample', 'cnic', 'age', 'contact'];
+      for (let field of fields) {
+        localStorage.setItem(field, document.getElementById(field).value.trim());
+      }
+
+      const selected = [];
+      document.querySelectorAll('input[type=checkbox]:checked').forEach(cb => {
+        selected.push(cb.value);
+      });
+      localStorage.setItem('departments', JSON.stringify(selected));
+
+      if (selected.length === 0) {
+        alert("Please select at least one department.");
+        return false;
+      }
+
+      return true;
+    }
+  </script>
+</body>
+</html>
