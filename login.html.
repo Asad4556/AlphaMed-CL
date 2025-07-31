@@ -3,81 +3,138 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AlphaMed Lab Login</title>
+  <title>AlphaMed Report Dashboard</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f2f2f2;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .login-container {
-      background: white;
-      padding: 30px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      border-radius: 8px;
-      width: 300px;
+      margin: 20px;
+      background: #f9f9f9;
     }
     h2 {
       text-align: center;
-      margin-bottom: 20px;
+    }
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 12px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
     }
     label {
-      display: block;
-      margin-bottom: 5px;
       font-weight: bold;
     }
-    input[type="text"], input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+    .departments input {
+      margin-right: 10px;
     }
-    button {
-      width: 100%;
-      padding: 10px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
+    #reportOutput {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      border: 2px dashed #aaa;
+      background: white url('logo.png') no-repeat center;
+      background-size: contain;
+      position: relative;
     }
-    button:hover {
-      background-color: #0056b3;
+    #reportOutput::before {
+      content: 'Alpha-Med Clinical Lab';
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .qr {
+      position: absolute;
+      top: 10px;
+      right: 10px;
     }
   </style>
 </head>
 <body>
-  <div class="login-container">
-    <h2>Lab Login</h2>
-    <form onsubmit="return loginUser()">
-      <label for="cnic">CNIC</label>
-      <input type="text" id="cnic" placeholder="Enter CNIC" required>
 
-      <label for="password">Password</label>
-      <input type="password" id="password" placeholder="Enter Password" required>
+<script>
+  if (localStorage.getItem("loggedIn") !== "true") {
+    window.location.href = "login.html";
+  }
+</script>
 
-      <button type="submit">Login</button>
-    </form>
+<h2>Patient Report Entry</h2>
+<form id="reportForm">
+  <label>Name:</label>
+  <input type="text" id="name" required>
+
+  <label>Father/Son Of/W/O:</label>
+  <input type="text" id="guardian" required>
+
+  <label>Sample Number:</label>
+  <input type="text" id="sample" required>
+
+  <label>CNIC:</label>
+  <input type="text" id="cnic" required>
+
+  <label>Age:</label>
+  <input type="number" id="age" required>
+
+  <label>Contact Number:</label>
+  <input type="text" id="contact" required>
+
+  <label>Select Departments:</label>
+  <div class="departments">
+    <label><input type="checkbox" value="Hematology"> Hematology</label><br>
+    <label><input type="checkbox" value="Serology"> Serology</label><br>
+    <label><input type="checkbox" value="Histopathology"> Histopathology</label><br>
+    <label><input type="checkbox" value="Microbiology"> Microbiology</label><br>
+    <label><input type="checkbox" value="Biochemistry"> Biochemistry</label><br>
+    <label><input type="checkbox" value="Culture Tests"> Culture Tests</label><br>
+    <label><input type="checkbox" value="Special Chemistry"> Special Chemistry</label><br>
+    <label><input type="checkbox" value="Molecular Biology"> Molecular Biology</label><br>
+    <label><input type="checkbox" value="Blood Banking"> Blood Banking</label><br>
   </div>
 
-  <script>
-    function loginUser() {
-      const cnic = document.getElementById('cnic').value.trim();
-      const password = document.getElementById('password').value.trim();
+  <label>Test Details & Results:</label>
+  <textarea id="testDetails" rows="5" placeholder="Test Name - Normal Value - Result"></textarea>
 
-      if (cnic === '34501-8971113-8' && password === 'Admin@2723') {
-        localStorage.setItem("loggedIn", "true");
-        window.location.href = "dashboard.html";
-        return false;
-      } else {
-        alert("Invalid CNIC or Password");
-        return false;
-      }
-    }
-  </script>
+  <button type="button" onclick="generateReport()">Generate Report</button>
+</form>
+
+<div id="reportOutput">
+  <div class="qr" id="qrCode"></div>
+  <div id="reportContent"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+<script>
+function generateReport() {
+  const name = document.getElementById('name').value;
+  const guardian = document.getElementById('guardian').value;
+  const sample = document.getElementById('sample').value;
+  const cnic = document.getElementById('cnic').value;
+  const age = document.getElementById('age').value;
+  const contact = document.getElementById('contact').value;
+  const testDetails = document.getElementById('testDetails').value;
+  const departments = Array.from(document.querySelectorAll('.departments input:checked')).map(el => el.value).join(', ');
+
+  const mrn = 'MRN-' + Math.floor(100000 + Math.random() * 900000);
+
+  const reportData = `MRN: ${mrn}\nName: ${name}\nFather/Son/W/O: ${guardian}\nSample #: ${sample}\nCNIC: ${cnic}\nAge: ${age}\nContact: ${contact}\nDepartments: ${departments}\nTests: ${testDetails}`;
+
+  document.getElementById('reportContent').innerText = reportData;
+  document.getElementById('reportOutput').style.display = 'block';
+
+  const qr = new QRious({
+    element: document.getElementById('qrCode'),
+    value: reportData,
+    size: 100,
+  });
+}
+</script>
+
 </body>
 </html>
