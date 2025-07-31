@@ -1,0 +1,103 @@
+const testDatabase = {
+  "Hematology": [
+    { name: "Complete Blood Count (CBC)", normal: "Refer local range" },
+    { name: "Hemoglobin", normal: "13‑17 g/dL" },
+    { name: "Hematocrit", normal: "38‑52 %" },
+    { name: "RBC Count", normal: "4.2‑5.9 x10^12/L" },
+    { name: "WBC", normal: "4‑11 x10^9/L" },
+    { name: "Platelets", normal: "150‑450 x10^9/L" },
+    { name: "MCV", normal: "80‑100 fL" },
+    { name: "MCH", normal: "27‑33 pg" },
+    { name: "MCHC", normal: "32‑36 g/dL" },
+    { name: "ESR", normal: "0‑20 mm/hr" },
+    { name: "BT/CT", normal: "Bleeding & Clotting Time" },
+    { name: "APTT", normal: "25‑35 sec" },
+    { name: "PT/INR", normal: "PT 11‑15 sec, INR ~1.0" },
+    { name: "Reticulocyte Count", normal: "0.5‑1.5 %" },
+    { name: "Peripheral Blood Smear", normal: "-" }
+  ],
+  "Biochemistry": [
+    { name: "Fasting Glucose", normal: "70‑110 mg/dL" },
+    { name: "Post‑Prandial Glucose", normal: "<140 mg/dL" },
+    { name: "HbA1c", normal: "4‑6 %" },
+    { name: "Urea (BUN)", normal: "15‑40 mg/dL" },
+    { name: "Creatinine", normal: "0.6‑1.2 mg/dL" },
+    { name: "Total Bilirubin", normal: "0.1‑1.2 mg/dL" },
+    { name: "Direct Bilirubin", normal: "0‑0.3 mg/dL" },
+    { name: "AST (SGOT)", normal: "10‑40 U/L" },
+    { name: "ALT (SGPT)", normal: "7‑56 U/L" },
+    { name: "ALP", normal: "44‑147 U/L" },
+    { name: "GGT", normal: "0‑51 U/L" },
+    { name: "Total Protein", normal: "6‑8 g/dL" },
+    { name: "Albumin", normal: "3.5‑5.0 g/dL" },
+    { name: "Globulin", normal: "2.0‑3.5 g/dL" },
+    { name: "A/G Ratio", normal: "1.1‑2.5" },
+    { name: "Cholesterol (Total)", normal: "<200 mg/dL" },
+    { name: "HDL", normal: ">40 mg/dL" },
+    { name: "LDL", normal: "<100 mg/dL" },
+    { name: "Triglycerides", normal: "<150 mg/dL" },
+    { name: "Calcium", normal: "8.4‑10.2 mg/dL" },
+    { name: "Phosphorus", normal: "2.5‑4.5 mg/dL" },
+    { name: "Magnesium", normal: "1.7‑2.2 mg/dL" },
+    { name: "Uric Acid", normal: "3.4‑7.0 mg/dL" },
+    { name: "Iron", normal: "60‑170 µg/dL" },
+    { name: "Ferritin", normal: "30‑300 ng/mL" },
+    { name: "TIBC", normal: "240‑450 µg/dL" },
+    { name: "Vitamin B12", normal: "200‑900 pg/mL" },
+    { name: "Vitamin D", normal: "30‑100 ng/mL" },
+    { name: "Liver Function Panel (CMP)", normal: "Refer panel" }
+  ],
+  "Serology": [
+    { name: "CRP", normal: "Negative" },
+    { name: "Rheumatoid Factor (RF)", normal: "Negative" },
+    { name: "ANA", normal: "Negative" },
+    { name: "Anti‑dsDNA", normal: "Negative" },
+    { name: "Anti‑CCP", normal: "Negative" },
+    { name: "HCV Antibody", normal: "Negative" },
+    { name: "HBsAg", normal: "Negative" },
+    { name: "VDRL/TPHA (Syphilis)", normal: "Negative" },
+    { name: "Dengue IgM & IgG", normal: "Negative" },
+    { name: "H. pylori IgG/IgM", normal: "Negative" },
+    { name: "TORCH Panel (IgG/IgM)", normal: "Negative" }
+  ],
+  "Microbiology": [
+    { name: "Urine Culture", normal: "No growth" },
+    { name: "Blood Culture & Sensitivity", normal: "No growth" },
+    { name: "Throat Swab Culture", normal: "No growth" },
+    { name: "AFB Smear / Sputum (TB)", normal: "Negative" },
+    { name: "KOH Mount (Fungus)", normal: "Negative" },
+    { name: "Stool Microscopy", normal: "Negative" },
+    { name: "Malaria Smear / RDT", normal: "Negative" },
+    { name: "Swap Gross / Gram Stain", normal: "No significant bacteria" }
+  ],
+  "Histopathology": [
+    { name: "Biopsy Report", normal: "As per pathology" },
+    { name: "FNA / Cytology", normal: "As per pathology" },
+    { name: "IHC Markers (e.g. ER/PR)", normal: "As per report" }
+  ],
+  "Culture Tests": [
+    { name: "Blood Culture", normal: "No growth" },
+    { name: "Urine Culture", normal: "No growth" },
+    { name: "Pus / Fluid Culture", normal: "No growth" },
+    { name: "Swab Culture", normal: "No growth" }
+  ],
+  "Special Chemistry": [
+    { name: "Vitamin D", normal: "30‑100 ng/mL" },
+    { name: "Vitamin B12", normal: "200‑900 pg/mL" },
+    { name: "Hormone panels (e.g. TSH, FSH, LH)", normal: "Refer local lab range" },
+    { name: "Tumor Markers (e.g. AFP, CEA, CA‑125)", normal: "Refer panel" }
+  ],
+  "Molecular Biology": [
+    { name: "PCR COVID‑19", normal: "Negative" },
+    { name: "HIV‑1 RNA PCR", normal: "Negative" },
+    { name: "Hepatitis Viral DNA/RNA PCR (HBV/HCV)", normal: "Negative" },
+    { name: "TB PCR (GeneXpert)", normal: "Negative" }
+  ],
+  "Blood Banking": [
+    { name: "Blood Group (ABO)", normal: "Refer sample" },
+    { name: "Rh Typing", normal: "Positive/Negative" },
+    { name: "Direct Coombs Test", normal: "Negative" },
+    { name: "Indirect Coombs Test", normal: "Negative" },
+    { name: "Cross‑Match", normal: "Compatible" }
+  ]
+};
