@@ -8,47 +8,44 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-image: url('logo.png');
-      background-size: 500px;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      opacity: 0.95;
+      background: url('logo.png') center center no-repeat fixed;
+      background-size: 600px;
+      opacity: 0.98;
     }
 
     .container {
-      background: #fff;
+      background: white;
       margin: 20px auto;
       padding: 30px;
-      max-width: 900px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      max-width: 950px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.15);
       position: relative;
     }
 
     .lab-logo {
-      width: 120px;
+      width: 150px;
       height: auto;
       float: left;
     }
 
     header {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
 
     header h1 {
-      font-size: 28px;
+      font-size: 30px;
+      font-weight: bold;
       background: linear-gradient(to right, #007bff, #00cc66);
       -webkit-background-clip: text;
       color: transparent;
-      font-weight: bold;
       margin: 0;
     }
 
     header p {
       font-style: italic;
-      margin-top: 5px;
-      color: #444;
+      margin-top: 6px;
+      color: #333;
     }
 
     .report-card {
@@ -60,21 +57,30 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
 
     .report-logo {
-      width: 100px;
+      width: 110px;
     }
 
     .report-title h3 {
       margin: 0;
-      font-size: 20px;
+      font-size: 24px;
       font-weight: bold;
+      background: linear-gradient(to right, #007bff, #00cc66);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .report-title p {
+      font-weight: normal;
+      margin: 0;
+      color: #333;
     }
 
     .report-qr img {
-      width: 80px;
+      width: 90px;
     }
 
     .patient-info-report p {
@@ -84,17 +90,18 @@
     .results-table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 15px;
+      margin-top: 20px;
     }
 
-    .results-table th, .results-table td {
+    .results-table th,
+    .results-table td {
       border: 1px solid #ccc;
       padding: 8px;
       text-align: center;
     }
 
     .results-table th {
-      background: #f0f0f0;
+      background-color: #f8f8f8;
     }
 
     .low {
@@ -108,8 +115,8 @@
     }
 
     .btn {
-      margin-top: 20px;
-      padding: 10px 20px;
+      margin-top: 30px;
+      padding: 10px 25px;
       background-color: #007bff;
       border: none;
       color: white;
@@ -123,17 +130,17 @@
 
     #searchInput {
       width: 100%;
-      padding: 8px;
-      margin: 15px 0;
+      padding: 10px;
+      margin: 20px 0;
       border: 1px solid #ccc;
       font-size: 16px;
     }
 
     .footer-note {
       text-align: center;
-      margin-top: 30px;
+      margin-top: 40px;
       font-style: italic;
-      color: #333;
+      color: #444;
     }
   </style>
 </head>
@@ -158,8 +165,6 @@
   <script>
     const reportContent = document.getElementById('reportContent');
     const searchInput = document.getElementById('searchInput');
-
-    // Get all reports from localStorage
     const reports = JSON.parse(localStorage.getItem('patientReports')) || [];
 
     if (reports.length === 0) {
@@ -176,7 +181,7 @@
               <p>Patient Report</p>
             </div>
             <div class="report-qr">
-              <img src="https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(report.mrn)}&size=80x80" alt="QR Code" />
+              <img src="https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(report.mrn)}&size=90x90" alt="QR Code" />
             </div>
           </div>
 
@@ -203,9 +208,13 @@
       `;
 
       report.results.forEach(r => {
+        if (!r.result || r.result.trim() === "") return; // Skip empty result fields
+
         let indicator = "";
         const resultValue = parseFloat(r.result);
-        const [min, max] = r.normalRange.replace(/[^0-9\-.–]+/g, '').split(/[-–]/).map(parseFloat);
+        const rangeParts = r.normalRange.replace(/[^\d.–-]/g, '').split(/[-–]/).map(parseFloat);
+        const min = rangeParts[0], max = rangeParts[1];
+
         if (!isNaN(resultValue) && !isNaN(min) && !isNaN(max)) {
           if (resultValue < min) indicator = "low";
           else if (resultValue > max) indicator = "high";
@@ -229,11 +238,10 @@
 
       reportContent.innerHTML = html;
 
-      // Search filter
+      // Search feature
       searchInput.addEventListener('keyup', function () {
         const filter = this.value.toLowerCase();
-        const rows = document.querySelectorAll("#resultsTable tbody tr");
-        rows.forEach(row => {
+        document.querySelectorAll("#resultsTable tbody tr").forEach(row => {
           const testName = row.cells[0].textContent.toLowerCase();
           row.style.display = testName.includes(filter) ? "" : "none";
         });
