@@ -2,73 +2,81 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <title>Patient Report - Alpha-Med Lab</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Patient Lab Report</title>
-  <link rel="stylesheet" href="style.css"/>
-  <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 </head>
-<body>
+<body onload="loadReport()">
+  <div class="report-container">
+    <div class="report-header">
+      <div class="qr-side">
+        <canvas id="qr"></canvas>
+      </div>
+      <div class="center-lab-title">
+        <h1>Alpha-Med Clinical Laboratory</h1>
+        <p class="subtitle">Trusted Medical Diagnostics</p>
+      </div>
+      <div class="logo-side">
+        <img src="logo.png" alt="Lab Logo" class="lab-logo" />
+      </div>
+    </div>
 
-<div id="reportContainer">
-  <div class="report-header">
-    <img src="logo.png" alt="Lab Logo" class="logo-left" />
-    <div class="lab-name">Alpha-Med Clinical Laboratory</div>
-    <canvas id="qrCode" class="qr-right"></canvas>
+    <div class="patient-info">
+      <p><strong>Name:</strong> <span id="name"></span></p>
+      <p><strong>CNIC:</strong> <span id="cnic"></span></p>
+      <p><strong>Phone:</strong> <span id="phone"></span></p>
+      <p><strong>Age:</strong> <span id="age"></span></p>
+      <p><strong>MRN:</strong> <span id="mrn"></span></p>
+    </div>
+
+    <div class="test-results">
+      <h3>Test Results</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Test</th>
+            <th>Result</th>
+            <th>Normal Range</th>
+            <th>Unit</th>
+          </tr>
+        </thead>
+        <tbody id="test-body"></tbody>
+      </table>
+    </div>
+
+    <div class="footer">
+      <p>Generated on: <span id="date"></span></p>
+      <p class="watermark">Alpha-Med Clinical Laboratory</p>
+    </div>
   </div>
 
-  <div class="patient-info" id="patientInfo">
-    <!-- Filled dynamically -->
-  </div>
+  <script>
+    function loadReport() {
+      const report = JSON.parse(localStorage.getItem("lastReport"));
+      if (!report) return;
 
-  <table class="test-report" id="testResults">
-    <thead>
-      <tr>
-        <th>Test Name</th>
-        <th>Result</th>
-        <th>Normal Range</th>
-        <th>Unit</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Test rows injected here -->
-    </tbody>
-  </table>
+      document.getElementById("name").textContent = report.name;
+      document.getElementById("cnic").textContent = report.cnic;
+      document.getElementById("phone").textContent = report.phone;
+      document.getElementById("age").textContent = report.age;
+      document.getElementById("mrn").textContent = report.mrn;
+      document.getElementById("date").textContent = new Date().toLocaleDateString();
 
-  <br/>
-  <button onclick="window.print()">🖨️ Print Report</button>
-</div>
+      const tbody = document.getElementById("test-body");
+      report.tests.forEach(test => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${test.name}</td>
+          <td>${test.result}</td>
+          <td>${test.normalRange}</td>
+          <td>${test.unit || "-"}</td>
+        `;
+        tbody.appendChild(tr);
+      });
 
-<script>
-  const patient = JSON.parse(localStorage.getItem("lastPatient")) || {};
-  const testResults = JSON.parse(localStorage.getItem("lastResults")) || [];
-
-  document.getElementById("patientInfo").innerHTML = `
-    <p><strong>Patient Name:</strong> ${patient.name}</p>
-    <p><strong>CNIC:</strong> ${patient.cnic}</p>
-    <p><strong>Phone:</strong> ${patient.phone}</p>
-    <p><strong>Age:</strong> ${patient.age}</p>
-    <p><strong>MRN:</strong> ${patient.mrn}</p>
-    <p><strong>Department:</strong> ${patient.department}</p>
-  `;
-
-  const tbody = document.querySelector("#testResults tbody");
-  testResults.forEach(test => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${test.name}</td>
-      <td>${test.result || '-'}</td>
-      <td>${test.normalRange || '-'}</td>
-      <td>${test.unit || ''}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-
-  const qr = new QRious({
-    element: document.getElementById('qrCode'),
-    value: `MRN: ${patient.mrn}, Name: ${patient.name}`,
-    size: 100,
-  });
-</script>
-
+      QRCode.toCanvas(document.getElementById("qr"), report.mrn, { width: 100 });
+    }
+  </script>
 </body>
 </html>
