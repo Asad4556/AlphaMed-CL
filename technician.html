@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Technician Panel - Alpha-Med</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Technician Panel - Enter Test Results</h1>
+
+    <form id="reportForm">
+      <label>Patient Name:</label>
+      <input type="text" id="name" required />
+      <label>CNIC:</label>
+      <input type="text" id="cnic" required />
+      <label>Phone:</label>
+      <input type="text" id="phone" required />
+      <label>Department:</label>
+      <select id="department" required>
+        <option value="">Select Department</option>
+        <option value="Hematology">Hematology</option>
+        <option value="Biochemistry">Biochemistry</option>
+        <option value="Serology">Serology</option>
+        <option value="Microbiology">Microbiology</option>
+        <option value="Immunology">Immunology</option>
+        <option value="Pathology">Pathology</option>
+      </select>
+      <label>Age:</label>
+      <input type="number" id="age" required />
+      <label>MRN:</label>
+      <input type="text" id="mrn" required />
+      <label>Date:</label>
+      <input type="date" id="date" required />
+
+      <div id="testsContainer"></div>
+
+      <button type="submit" class="btn">Save Report</button>
+    </form>
+  </div>
+
+  <script src="testData.js"></script>
+  <script src="technician.js"></script>
+</body>
+</html>
