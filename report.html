@@ -3,84 +3,68 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Alpha-Med Clinical Laboratory - Patient Report</title>
+  <title>Alpha-Med Clinical Laboratory - Reports</title>
   <link rel="stylesheet" href="style.css" />
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: url('logo.png') center center no-repeat fixed;
-      background-size: 600px;
-      opacity: 0.98;
+      background-image: url('logo.png');
+      background-size: 400px;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      opacity: 0.95;
     }
 
     .container {
-      background: white;
+      background: #fff;
       margin: 20px auto;
       padding: 30px;
-      max-width: 950px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.15);
+      max-width: 900px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
       position: relative;
-    }
-
-    .lab-logo {
-      width: 150px;
-      height: auto;
-      float: left;
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 25px;
-    }
-
-    header h1 {
-      font-size: 30px;
-      font-weight: bold;
-      background: linear-gradient(to right, #007bff, #00cc66);
-      -webkit-background-clip: text;
-      color: transparent;
-      margin: 0;
-    }
-
-    header p {
-      font-style: italic;
-      margin-top: 6px;
-      color: #333;
     }
 
     .report-card {
       border-top: 2px solid #ccc;
       padding-top: 20px;
+      margin-top: 40px;
+      page-break-after: always;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    header h1 {
+      font-size: 28px;
+      background: linear-gradient(to right, #007bff, #00cc66);
+      -webkit-background-clip: text;
+      color: transparent;
+      font-weight: bold;
+      margin: 0;
     }
 
     .report-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
 
     .report-logo {
-      width: 110px;
+      width: 100px;
     }
 
     .report-title h3 {
       margin: 0;
-      font-size: 24px;
+      font-size: 20px;
       font-weight: bold;
-      background: linear-gradient(to right, #007bff, #00cc66);
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    .report-title p {
-      font-weight: normal;
-      margin: 0;
-      color: #333;
     }
 
     .report-qr img {
-      width: 90px;
+      width: 80px;
     }
 
     .patient-info-report p {
@@ -90,18 +74,17 @@
     .results-table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 20px;
+      margin-top: 15px;
     }
 
-    .results-table th,
-    .results-table td {
+    .results-table th, .results-table td {
       border: 1px solid #ccc;
       padding: 8px;
       text-align: center;
     }
 
     .results-table th {
-      background-color: #f8f8f8;
+      background: #f0f0f0;
     }
 
     .low {
@@ -115,8 +98,8 @@
     }
 
     .btn {
-      margin-top: 30px;
-      padding: 10px 25px;
+      margin-top: 20px;
+      padding: 10px 20px;
       background-color: #007bff;
       border: none;
       color: white;
@@ -128,123 +111,146 @@
       background-color: #0056b3;
     }
 
-    #searchInput {
+    #searchInput, #filterSection {
       width: 100%;
-      padding: 10px;
-      margin: 20px 0;
+      padding: 8px;
+      margin: 10px 0;
       border: 1px solid #ccc;
       font-size: 16px;
     }
 
     .footer-note {
       text-align: center;
-      margin-top: 40px;
+      margin-top: 30px;
       font-style: italic;
-      color: #444;
+      color: #333;
+    }
+
+    @media print {
+      .btn, #searchInput, #filterSection {
+        display: none !important;
+      }
+
+      .report-card {
+        page-break-after: always;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
-      <img src="logo.png" alt="Lab Logo" class="lab-logo" />
+      <img src="logo.png" alt="Lab Logo" class="report-logo" />
       <h1>Alpha-Med Clinical Laboratory</h1>
       <p>Accredited Clinical Diagnostic Laboratory</p>
     </header>
 
-    <section id="reportSection">
-      <h2>Patient Report</h2>
-      <input type="text" id="searchInput" placeholder="Search test by name..." />
-      <div id="reportContent"></div>
-    </section>
+    <h2>All Patient Reports</h2>
+    <input type="text" id="searchInput" placeholder="Search test by name..." />
+    <select id="filterSection">
+      <option value="">Filter by Department</option>
+    </select>
 
-    <button onclick="window.print()" class="btn">Print Report</button>
-    <div class="footer-note">This report is electronically verified. No signature required.</div>
+    <div id="reportContent"></div>
+
+    <button onclick="window.print()" class="btn">Print All Reports</button>
+    <div class="footer-note">These reports are electronically verified. No signature required.</div>
   </div>
 
   <script>
     const reportContent = document.getElementById('reportContent');
     const searchInput = document.getElementById('searchInput');
+    const filterSection = document.getElementById('filterSection');
+
     const reports = JSON.parse(localStorage.getItem('patientReports')) || [];
 
     if (reports.length === 0) {
       reportContent.innerHTML = "<p>No reports found.</p>";
     } else {
-      const report = reports[reports.length - 1];
-
-      let html = `
-        <div class="report-card">
-          <div class="report-header">
-            <img src="logo.png" alt="Lab Logo" class="report-logo" />
-            <div class="report-title">
-              <h3>Alpha-Med Clinical Laboratory</h3>
-              <p>Patient Report</p>
-            </div>
-            <div class="report-qr">
-              <img src="https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(report.mrn)}&size=90x90" alt="QR Code" />
-            </div>
-          </div>
-
-          <div class="patient-info-report">
-            <p><strong>Name:</strong> ${report.name}</p>
-            <p><strong>CNIC:</strong> ${report.cnic}</p>
-            <p><strong>Phone:</strong> ${report.phone}</p>
-            <p><strong>Age:</strong> ${report.age}</p>
-            <p><strong>Department:</strong> ${report.department}</p>
-            <p><strong>MRN:</strong> ${report.mrn}</p>
-            <p><strong>Date:</strong> ${report.date}</p>
-          </div>
-
-          <table class="results-table" id="resultsTable">
-            <thead>
-              <tr>
-                <th>Test Name</th>
-                <th>Result</th>
-                <th>Normal Range</th>
-                <th>Unit</th>
-              </tr>
-            </thead>
-            <tbody>
-      `;
-
-      report.results.forEach(r => {
-        if (!r.result || r.result.trim() === "") return; // Skip empty result fields
-
-        let indicator = "";
-        const resultValue = parseFloat(r.result);
-        const rangeParts = r.normalRange.replace(/[^\d.–-]/g, '').split(/[-–]/).map(parseFloat);
-        const min = rangeParts[0], max = rangeParts[1];
-
-        if (!isNaN(resultValue) && !isNaN(min) && !isNaN(max)) {
-          if (resultValue < min) indicator = "low";
-          else if (resultValue > max) indicator = "high";
-        }
-
-        html += `
-          <tr>
-            <td>${r.testName}</td>
-            <td class="${indicator}">${r.result}</td>
-            <td>${r.normalRange}</td>
-            <td>${r.unit}</td>
-          </tr>
-        `;
+      const departments = new Set();
+      reports.forEach(r => departments.add(r.department));
+      departments.forEach(dept => {
+        const option = document.createElement("option");
+        option.value = dept;
+        option.textContent = dept;
+        filterSection.appendChild(option);
       });
 
-      html += `
-            </tbody>
-          </table>
-        </div>
-      `;
+      function renderReports(filteredReports) {
+        reportContent.innerHTML = '';
+        filteredReports.forEach(report => {
+          let html = `
+            <div class="report-card">
+              <div class="report-header">
+                <img src="logo.png" alt="Lab Logo" class="report-logo" />
+                <div class="report-title">
+                  <h3>Alpha-Med Clinical Laboratory</h3>
+                  <p>Patient Report</p>
+                </div>
+                <div class="report-qr">
+                  <img src="https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(report.mrn)}&size=80x80" alt="QR Code" />
+                </div>
+              </div>
+              <div class="patient-info-report">
+                <p><strong>Name:</strong> ${report.name}</p>
+                <p><strong>CNIC:</strong> ${report.cnic}</p>
+                <p><strong>Phone:</strong> ${report.phone}</p>
+                <p><strong>Age:</strong> ${report.age}</p>
+                <p><strong>Department:</strong> ${report.department}</p>
+                <p><strong>MRN:</strong> ${report.mrn}</p>
+                <p><strong>Date:</strong> ${report.date}</p>
+              </div>
+              <table class="results-table" id="resultsTable">
+                <thead>
+                  <tr>
+                    <th>Test Name</th>
+                    <th>Result</th>
+                    <th>Normal Range</th>
+                    <th>Unit</th>
+                  </tr>
+                </thead>
+                <tbody>`;
 
-      reportContent.innerHTML = html;
+          report.results.forEach(r => {
+            let indicator = "";
+            const resultValue = parseFloat(r.result);
+            const [min, max] = r.normalRange.replace(/[^0-9\-.–]+/g, '').split(/[-–]/).map(parseFloat);
+            if (!isNaN(resultValue) && !isNaN(min) && !isNaN(max)) {
+              if (resultValue < min) indicator = "low";
+              else if (resultValue > max) indicator = "high";
+            }
 
-      // Search feature
+            html += `
+              <tr>
+                <td>${r.testName}</td>
+                <td class="${indicator}">${r.result}</td>
+                <td>${r.normalRange}</td>
+                <td>${r.unit}</td>
+              </tr>`;
+          });
+
+          html += `</tbody></table></div>`;
+          reportContent.innerHTML += html;
+        });
+      }
+
+      renderReports(reports);
+
+      // Filter by test name
       searchInput.addEventListener('keyup', function () {
         const filter = this.value.toLowerCase();
-        document.querySelectorAll("#resultsTable tbody tr").forEach(row => {
+        const rows = document.querySelectorAll("#resultsTable tbody tr");
+        rows.forEach(row => {
           const testName = row.cells[0].textContent.toLowerCase();
           row.style.display = testName.includes(filter) ? "" : "none";
         });
+      });
+
+      // Filter by department
+      filterSection.addEventListener('change', function () {
+        const selected = this.value;
+        const filtered = selected ? reports.filter(r => r.department === selected) : reports;
+        renderReports(filtered);
       });
     }
   </script>
