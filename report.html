@@ -5,29 +5,135 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Alpha-Med Clinical Laboratory - Patient Report</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <style>
-    .low { color: blue; font-weight: bold; }
-    .high { color: red; font-weight: bold; }
-    .normal { color: green; font-weight: bold; }
-    .search-box {
-      margin: 20px 0;
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url('logo.png');
+      background-size: 500px;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      opacity: 0.95;
+    }
+
+    .container {
+      background: #fff;
+      margin: 20px auto;
+      padding: 30px;
+      max-width: 900px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .lab-logo {
+      width: 120px;
+      height: auto;
+      float: left;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    header h1 {
+      font-size: 28px;
+      background: linear-gradient(to right, #007bff, #00cc66);
+      -webkit-background-clip: text;
+      color: transparent;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    header p {
+      font-style: italic;
+      margin-top: 5px;
+      color: #444;
+    }
+
+    .report-card {
+      border-top: 2px solid #ccc;
+      padding-top: 20px;
+    }
+
+    .report-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .report-logo {
+      width: 100px;
+    }
+
+    .report-title h3 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .report-qr img {
+      width: 80px;
+    }
+
+    .patient-info-report p {
+      margin: 3px 0;
+    }
+
+    .results-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    .results-table th, .results-table td {
+      border: 1px solid #ccc;
+      padding: 8px;
       text-align: center;
     }
-    .search-box input {
+
+    .results-table th {
+      background: #f0f0f0;
+    }
+
+    .low {
+      color: red;
+      font-weight: bold;
+    }
+
+    .high {
+      color: orange;
+      font-weight: bold;
+    }
+
+    .btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      border: none;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    #searchInput {
+      width: 100%;
       padding: 8px;
-      width: 50%;
+      margin: 15px 0;
+      border: 1px solid #ccc;
       font-size: 16px;
     }
-    .verified-note {
+
+    .footer-note {
       text-align: center;
       margin-top: 30px;
       font-style: italic;
-      color: #555;
-    }
-    #qrCanvas {
-      display: block;
-      margin: 20px auto;
+      color: #333;
     }
   </style>
 </head>
@@ -41,21 +147,19 @@
 
     <section id="reportSection">
       <h2>Patient Report</h2>
-      <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Search test by name..." />
-      </div>
+      <input type="text" id="searchInput" placeholder="Search test by name..." />
       <div id="reportContent"></div>
-      <canvas id="qrCanvas"></canvas>
-      <div class="verified-note">
-        *** This report is electronically verified and requires no signature or stamp. ***
-      </div>
     </section>
 
     <button onclick="window.print()" class="btn">Print Report</button>
+    <div class="footer-note">This report is electronically verified. No signature required.</div>
   </div>
 
   <script>
     const reportContent = document.getElementById('reportContent');
+    const searchInput = document.getElementById('searchInput');
+
+    // Get all reports from localStorage
     const reports = JSON.parse(localStorage.getItem('patientReports')) || [];
 
     if (reports.length === 0) {
@@ -70,6 +174,9 @@
             <div class="report-title">
               <h3>Alpha-Med Clinical Laboratory</h3>
               <p>Patient Report</p>
+            </div>
+            <div class="report-qr">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(report.mrn)}&size=80x80" alt="QR Code" />
             </div>
           </div>
 
@@ -95,33 +202,19 @@
             <tbody>
       `;
 
-      function parseRange(rangeStr) {
-        const match = rangeStr.match(/([\d.]+)\s*-\s*([\d.]+)/);
-        if (match) {
-          return { min: parseFloat(match[1]), max: parseFloat(match[2]) };
-        }
-        return null;
-      }
-
       report.results.forEach(r => {
-        const range = parseRange(r.normalRange);
-        const val = parseFloat(r.result);
-        let indicator = '';
-
-        if (range) {
-          if (val < range.min) {
-            indicator = '<span class="low">🔻 Low</span>';
-          } else if (val > range.max) {
-            indicator = '<span class="high">🔺 High</span>';
-          } else {
-            indicator = '<span class="normal">✅ Normal</span>';
-          }
+        let indicator = "";
+        const resultValue = parseFloat(r.result);
+        const [min, max] = r.normalRange.replace(/[^0-9\-.–]+/g, '').split(/[-–]/).map(parseFloat);
+        if (!isNaN(resultValue) && !isNaN(min) && !isNaN(max)) {
+          if (resultValue < min) indicator = "low";
+          else if (resultValue > max) indicator = "high";
         }
 
         html += `
           <tr>
             <td>${r.testName}</td>
-            <td>${r.result} ${indicator}</td>
+            <td class="${indicator}">${r.result}</td>
             <td>${r.normalRange}</td>
             <td>${r.unit}</td>
           </tr>
@@ -136,19 +229,13 @@
 
       reportContent.innerHTML = html;
 
-      // Generate QR Code
-      const qrCanvas = document.getElementById('qrCanvas');
-      QRCode.toCanvas(qrCanvas, `Patient: ${report.name}\nMRN: ${report.mrn}\nCNIC: ${report.cnic}`, { width: 100 }, function (error) {
-        if (error) console.error(error);
-      });
-
-      // Search Filter
-      document.getElementById("searchInput").addEventListener("keyup", function () {
-        const value = this.value.toLowerCase();
+      // Search filter
+      searchInput.addEventListener('keyup', function () {
+        const filter = this.value.toLowerCase();
         const rows = document.querySelectorAll("#resultsTable tbody tr");
         rows.forEach(row => {
           const testName = row.cells[0].textContent.toLowerCase();
-          row.style.display = testName.includes(value) ? "" : "none";
+          row.style.display = testName.includes(filter) ? "" : "none";
         });
       });
     }
