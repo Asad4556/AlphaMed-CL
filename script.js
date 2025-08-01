@@ -1,138 +1,207 @@
-// Load department and test data from testData.js (you must include this file before script.js in index.html)
-let departments = Object.keys(testData);
-const deptSelect = document.getElementById("department");
-const testSelect = document.getElementById("test");
-const selectedTestsContainer = document.getElementById("selected-tests");
-const reportListContainer = document.getElementById("report-list");
-
-let selectedTests = [];
-let currentMRN = Date.now();
-
-document.getElementById("mrn").value = currentMRN;
-
-// Populate departments
-departments.forEach(dep => {
-  const option = document.createElement("option");
-  option.value = dep;
-  option.textContent = dep;
-  deptSelect.appendChild(option);
-});
-
-// When department changes
-deptSelect.addEventListener("change", () => {
-  testSelect.innerHTML = "<option value=''>Select Test</option>";
-  const selectedDept = deptSelect.value;
-  if (!selectedDept) return;
-
-  testData[selectedDept].forEach(test => {
-    const option = document.createElement("option");
-    option.value = test.name;
-    option.textContent = test.name;
-    option.dataset.range = test.range;
-    option.dataset.unit = test.unit;
-    testSelect.appendChild(option);
-  });
-});
-
-// When test selected
-testSelect.addEventListener("change", () => {
-  const testName = testSelect.value;
-  if (!testName) return;
-
-  const selectedOption = testSelect.selectedOptions[0];
-  const range = selectedOption.dataset.range;
-  const unit = selectedOption.dataset.unit;
-
-  if (selectedTests.some(t => t.name === testName)) return;
-
-  selectedTests.push({
-    name: testName,
-    normalRange: range,
-    unit: unit,
-    result: ""
-  });
-
-  renderSelectedTests();
-});
-
-// Render selected test result inputs
-function renderSelectedTests() {
-  selectedTestsContainer.innerHTML = "";
-  selectedTests.forEach((test, index) => {
-    const div = document.createElement("div");
-    div.classList.add("test-entry");
-    div.innerHTML = `
-      <strong>${test.name}</strong> (Normal: ${test.normalRange}, Unit: ${test.unit})<br>
-      Result: <input type="text" oninput="updateResult(${index}, this.value)" placeholder="Enter result" />
-    `;
-    selectedTestsContainer.appendChild(div);
-  });
+// Utility for generating unique MRN number
+function generateMRN() {
+  return 'MRN-' + Math.floor(100000 + Math.random() * 900000);
 }
 
-function updateResult(index, value) {
-  selectedTests[index].result = value;
+// Utility for generating barcode data (simple barcode text)
+function generateBarcode(mrn) {
+  // For simplicity, barcode = MRN with some decoration
+  return `|| ${mrn} ||`;
 }
 
-// Save full report
-document.getElementById("save-btn").addEventListener("click", () => {
-  const name = document.getElementById("name").value.trim();
-  const cnic = document.getElementById("cnic").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const age = document.getElementById("age").value.trim();
-  const mrn = document.getElementById("mrn").value.trim();
+// Populate department dropdown dynamically
+const departmentSelect = document.getElementById('departmentSelect');
+for (const dept in testData) {
+  const option = document.createElement('option');
+  option.value = dept;
+  option.textContent = dept;
+  departmentSelect.appendChild(option);
+}
 
-  if (!name || !cnic || !phone || !age || selectedTests.length === 0) {
-    alert("Please fill all patient info and select at least one test.");
+const patientForm = document.getElementById('patientForm');
+const testSelectionSection = document.querySelector('.test-selection');
+const testsContainer = document.getElementById('testsContainer');
+const testForm = document.getElementById('testForm');
+const reportSection = document.querySelector('.report-section');
+const reportsList = document.getElementById('reportsList');
+
+let currentTests = [];
+let currentPatientInfo = null;
+
+departmentSelect.addEventListener('change', () => {
+  const selectedDept = departmentSelect.value;
+  testsContainer.innerHTML = '';
+  if (!selectedDept) {
+    testSelectionSection.style.display = 'none';
+    return;
+  }
+  currentTests = testData[selectedDept] || [];
+  if (currentTests.length === 0) {
+    testsContainer.innerHTML = '<p>No tests available for this department.</p>';
+    testSelectionSection.style.display = 'block';
     return;
   }
 
-  const report = {
-    name, cnic, phone, age, mrn,
-    tests: selectedTests
+  // Create test input fields with normal ranges and input for result
+  currentTests.forEach((test, index) => {
+    const testDiv = document.createElement('div');
+    testDiv.className = 'test-input';
+
+    const label = document.createElement('label');
+    label.htmlFor = `testResult_${index}`;
+    label.textContent = `${test.name} (Normal: ${test.normalRange} ${test.unit || ''})`;
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.id = `testResult_${index}`;
+    input.name = `testResult_${index}`;
+    input.placeholder = 'Enter Result';
+    input.required = true;
+
+    testDiv.appendChild(label);
+    testDiv.appendChild(input);
+    testsContainer.appendChild(testDiv);
+  });
+
+  testSelectionSection.style.display = 'block';
+});
+
+testForm.addEventListener('submit', e => {
+  e.preventDefault();
+  const formData = new FormData(patientForm);
+  const testResults = [];
+
+  for (let i = 0; i < currentTests.length; i++) {
+    const result = testForm[`testResult_${i}`].value.trim();
+    if (!result) {
+      alert(`Please enter result for test: ${currentTests[i].name}`);
+      return;
+    }
+    testResults.push({
+      testName: currentTests[i].name,
+      normalRange: currentTests[i].normalRange,
+      unit: currentTests[i].unit,
+      result: result
+    });
+  }
+
+  // Collect patient info
+  currentPatientInfo = {
+    name: formData.get('patientName'),
+    cnic: formData.get('patientCNIC'),
+    phone: formData.get('patientPhone'),
+    age: formData.get('patientAge'),
+    department: departmentSelect.value,
+    mrn: generateMRN(),
+    barcode: null,
+    results: testResults,
+    date: new Date().toLocaleDateString()
   };
 
-  // Save to localStorage
-  let reports = JSON.parse(localStorage.getItem("reports") || "[]");
-  reports.push(report);
-  localStorage.setItem("reports", JSON.stringify(reports));
-  localStorage.setItem("lastReport", JSON.stringify(report)); // for report.html
+  currentPatientInfo.barcode = generateBarcode(currentPatientInfo.mrn);
 
-  alert("Report saved successfully!");
-
-  selectedTests = [];
-  renderSelectedTests();
-  loadReports();
+  saveReport(currentPatientInfo);
+  displayReports();
+  testSelectionSection.style.display = 'none';
+  patientForm.reset();
+  departmentSelect.value = '';
+  alert('Report saved successfully!');
 });
 
-// Load report list
-function loadReports() {
-  reportListContainer.innerHTML = "";
-  const reports = JSON.parse(localStorage.getItem("reports") || "[]");
+// Save reports in localStorage
+function saveReport(report) {
+  let reports = JSON.parse(localStorage.getItem('patientReports')) || [];
+  reports.push(report);
+  localStorage.setItem('patientReports', JSON.stringify(reports));
+}
 
+// Display all saved reports
+function displayReports() {
+  let reports = JSON.parse(localStorage.getItem('patientReports')) || [];
+  reportsList.innerHTML = '';
   if (reports.length === 0) {
-    reportListContainer.innerHTML = "<p>No reports found.</p>";
+    reportsList.innerHTML = '<p>No reports generated yet.</p>';
+    reportSection.style.display = 'none';
     return;
   }
 
-  reports.forEach((report, index) => {
-    const div = document.createElement("div");
-    div.classList.add("report-card");
-    div.innerHTML = `
-      <p><strong>${report.name}</strong> | MRN: ${report.mrn}</p>
-      <button onclick="viewReport(${index})">View Report</button>
+  reportSection.style.display = 'block';
+
+  reports.forEach((report, idx) => {
+    const reportDiv = document.createElement('div');
+    reportDiv.className = 'report-card';
+
+    const headerDiv = document.createElement('div');
+    headerDiv.className = 'report-header';
+
+    const logoImg = document.createElement('img');
+    logoImg.src = 'logo.png';
+    logoImg.alt = 'Lab Logo';
+    logoImg.className = 'report-logo';
+
+    const titleDiv = document.createElement('div');
+    titleDiv.className = 'report-title';
+    titleDiv.innerHTML = `
+      <h3>Alpha-Med Clinical Laboratory</h3>
+      <p>Patient Report</p>
     `;
-    reportListContainer.appendChild(div);
+
+    const qrDiv = document.createElement('div');
+    qrDiv.className = 'report-qr';
+    qrDiv.textContent = report.barcode; // For now text barcode, you can enhance with real barcode generator
+
+    headerDiv.appendChild(logoImg);
+    headerDiv.appendChild(titleDiv);
+    headerDiv.appendChild(qrDiv);
+
+    // Patient Info
+    const patientInfoDiv = document.createElement('div');
+    patientInfoDiv.className = 'patient-info-report';
+    patientInfoDiv.innerHTML = `
+      <p><strong>Name:</strong> ${report.name}</p>
+      <p><strong>CNIC:</strong> ${report.cnic}</p>
+      <p><strong>Phone:</strong> ${report.phone}</p>
+      <p><strong>Age:</strong> ${report.age}</p>
+      <p><strong>Department:</strong> ${report.department}</p>
+      <p><strong>MRN:</strong> ${report.mrn}</p>
+      <p><strong>Date:</strong> ${report.date}</p>
+    `;
+
+    // Test Results Table
+    const resultsTable = document.createElement('table');
+    resultsTable.className = 'results-table';
+
+    const thead = document.createElement('thead');
+    thead.innerHTML = `
+      <tr>
+        <th>Test Name</th>
+        <th>Result</th>
+        <th>Normal Range</th>
+        <th>Unit</th>
+      </tr>
+    `;
+    resultsTable.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+    report.results.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${r.testName}</td>
+        <td>${r.result}</td>
+        <td>${r.normalRange}</td>
+        <td>${r.unit}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+    resultsTable.appendChild(tbody);
+
+    reportDiv.appendChild(headerDiv);
+    reportDiv.appendChild(patientInfoDiv);
+    reportDiv.appendChild(resultsTable);
+
+    reportsList.appendChild(reportDiv);
   });
 }
 
-function viewReport(index) {
-  const reports = JSON.parse(localStorage.getItem("reports") || "[]");
-  const report = reports[index];
-  if (report) {
-    localStorage.setItem("lastReport", JSON.stringify(report));
-    window.open("report.html", "_blank");
-  }
-}
-
-// Initial call
-loadReports();
+// On page load, display existing reports
+window.onload = displayReports;
