@@ -1,1100 +1,327 @@
 const testData = {
   "Hematology": [
-    {
-      "name": "WBC",
-      "normalRange": "4.0 \u2013 11.0 x10^9/L"
-    },
-    {
-      "name": "RBC",
-      "normalRange": "4.7 \u2013 6.1 million/\u00b5L"
-    },
-    {
-      "name": "Hemoglobin",
-      "normalRange": "13.5 \u2013 17.5 g/dL"
-    },
-    {
-      "name": "Hematocrit",
-      "normalRange": "38.8 \u2013 50.0%"
-    },
-    {
-      "name": "Platelet Count",
-      "normalRange": "150 \u2013 450 x10^3/\u00b5L"
-    },
-    {
-      "name": "MCV",
-      "normalRange": "80 \u2013 100 fL"
-    },
-    {
-      "name": "MCH",
-      "normalRange": "27 \u2013 33 pg"
-    },
-    {
-      "name": "MCHC",
-      "normalRange": "32 \u2013 36 g/dL"
-    },
-    {
-      "name": "RDW",
-      "normalRange": "11.5 \u2013 14.5%"
-    },
-    {
-      "name": "Neutrophils",
-      "normalRange": "40 \u2013 60%"
-    },
-    {
-      "name": "Lymphocytes",
-      "normalRange": "20 \u2013 40%"
-    },
-    {
-      "name": "Monocytes",
-      "normalRange": "2 \u2013 8%"
-    },
-    {
-      "name": "Eosinophils",
-      "normalRange": "1 \u2013 4%"
-    },
-    {
-      "name": "Basophils",
-      "normalRange": "0.5 \u2013 1%"
-    },
-    {
-      "name": "ESR",
-      "normalRange": "0 \u2013 20 mm/hr"
-    },
-    {
-      "name": "Reticulocyte Count",
-      "normalRange": "0.5 \u2013 1.5%"
-    },
-    {
-      "name": "Bleeding Time",
-      "normalRange": "2 \u2013 7 minutes"
-    },
-    {
-      "name": "Clotting Time",
-      "normalRange": "5 \u2013 15 minutes"
-    },
-    {
-      "name": "Prothrombin Time",
-      "normalRange": "11 \u2013 13.5 seconds"
-    },
-    {
-      "name": "INR",
-      "normalRange": "0.8 \u2013 1.2"
-    },
-    {
-      "name": "Fibrinogen",
-      "normalRange": "200 \u2013 400 mg/dL"
-    },
-    {
-      "name": "D-Dimer",
-      "normalRange": "< 0.5 \u00b5g/mL"
-    },
-    {
-      "name": "Factor VIII",
-      "normalRange": "50 \u2013 150%"
-    },
-    {
-      "name": "Factor IX",
-      "normalRange": "50 \u2013 150%"
-    },
-    {
-      "name": "Ferritin",
-      "normalRange": "24 \u2013 336 ng/mL"
-    },
-    {
-      "name": "Vitamin B12",
-      "normalRange": "200 \u2013 900 pg/mL"
-    },
-    {
-      "name": "Folate",
-      "normalRange": "2.7 \u2013 17.0 ng/mL"
-    },
-    {
-      "name": "Iron",
-      "normalRange": "60 \u2013 170 mcg/dL"
-    },
-    {
-      "name": "TIBC",
-      "normalRange": "240 \u2013 450 mcg/dL"
-    },
-    {
-      "name": "Transferrin",
-      "normalRange": "200 \u2013 360 mg/dL"
-    }
+    { "name": "Hemoglobin", "normalRange": "13.5 - 17.5", "unit": "g/dL" },
+    { "name": "Hematocrit", "normalRange": "41 - 53", "unit": "%" },
+    { "name": "WBC Count", "normalRange": "4.0 - 11.0", "unit": "x10^9/L" },
+    { "name": "RBC Count", "normalRange": "4.5 - 5.9", "unit": "x10^12/L" },
+    { "name": "Platelet Count", "normalRange": "150 - 450", "unit": "x10^9/L" },
+    { "name": "MCV", "normalRange": "80 - 100", "unit": "fL" },
+    { "name": "MCH", "normalRange": "27 - 33", "unit": "pg" },
+    { "name": "MCHC", "normalRange": "32 - 36", "unit": "g/dL" },
+    { "name": "RDW", "normalRange": "11.5 - 14.5", "unit": "%" },
+    { "name": "Neutrophils", "normalRange": "40 - 60", "unit": "%" },
+    { "name": "Lymphocytes", "normalRange": "20 - 40", "unit": "%" },
+    { "name": "Monocytes", "normalRange": "2 - 8", "unit": "%" },
+    { "name": "Eosinophils", "normalRange": "1 - 4", "unit": "%" },
+    { "name": "Basophils", "normalRange": "0 - 1", "unit": "%" },
+    { "name": "ESR", "normalRange": "0 - 20", "unit": "mm/hr" },
+    { "name": "Reticulocyte Count", "normalRange": "0.5 - 2.5", "unit": "%" },
+    { "name": "Peripheral Smear", "normalRange": "Normal", "unit": "" },
+    { "name": "Prothrombin Time", "normalRange": "11 - 13.5", "unit": "sec" },
+    { "name": "INR", "normalRange": "0.8 - 1.1", "unit": "" },
+    { "name": "APTT", "normalRange": "25 - 35", "unit": "sec" },
+    { "name": "Bleeding Time", "normalRange": "2 - 7", "unit": "min" },
+    { "name": "Clotting Time", "normalRange": "4 - 10", "unit": "min" },
+    { "name": "Fibrinogen", "normalRange": "200 - 400", "unit": "mg/dL" },
+    { "name": "D-Dimer", "normalRange": "< 0.5", "unit": "µg/mL" },
+    { "name": "Factor VIII", "normalRange": "50 - 150", "unit": "%" },
+    { "name": "Factor IX", "normalRange": "50 - 150", "unit": "%" },
+    { "name": "Thromboplastin Time", "normalRange": "20 - 40", "unit": "sec" },
+    { "name": "Blood Film", "normalRange": "Normal", "unit": "" },
+    { "name": "Bone Marrow", "normalRange": "Normal cellularity", "unit": "" },
+    { "name": "LE Cell Test", "normalRange": "Negative", "unit": "" }
   ],
+
   "Serology": [
-    {
-      "name": "Serology Test 1",
-      "normalRange": "Reference 1"
-    },
-    {
-      "name": "Serology Test 2",
-      "normalRange": "Reference 2"
-    },
-    {
-      "name": "Serology Test 3",
-      "normalRange": "Reference 3"
-    },
-    {
-      "name": "Serology Test 4",
-      "normalRange": "Reference 4"
-    },
-    {
-      "name": "Serology Test 5",
-      "normalRange": "Reference 5"
-    },
-    {
-      "name": "Serology Test 6",
-      "normalRange": "Reference 6"
-    },
-    {
-      "name": "Serology Test 7",
-      "normalRange": "Reference 7"
-    },
-    {
-      "name": "Serology Test 8",
-      "normalRange": "Reference 8"
-    },
-    {
-      "name": "Serology Test 9",
-      "normalRange": "Reference 9"
-    },
-    {
-      "name": "Serology Test 10",
-      "normalRange": "Reference 10"
-    },
-    {
-      "name": "Serology Test 11",
-      "normalRange": "Reference 11"
-    },
-    {
-      "name": "Serology Test 12",
-      "normalRange": "Reference 12"
-    },
-    {
-      "name": "Serology Test 13",
-      "normalRange": "Reference 13"
-    },
-    {
-      "name": "Serology Test 14",
-      "normalRange": "Reference 14"
-    },
-    {
-      "name": "Serology Test 15",
-      "normalRange": "Reference 15"
-    },
-    {
-      "name": "Serology Test 16",
-      "normalRange": "Reference 16"
-    },
-    {
-      "name": "Serology Test 17",
-      "normalRange": "Reference 17"
-    },
-    {
-      "name": "Serology Test 18",
-      "normalRange": "Reference 18"
-    },
-    {
-      "name": "Serology Test 19",
-      "normalRange": "Reference 19"
-    },
-    {
-      "name": "Serology Test 20",
-      "normalRange": "Reference 20"
-    },
-    {
-      "name": "Serology Test 21",
-      "normalRange": "Reference 21"
-    },
-    {
-      "name": "Serology Test 22",
-      "normalRange": "Reference 22"
-    },
-    {
-      "name": "Serology Test 23",
-      "normalRange": "Reference 23"
-    },
-    {
-      "name": "Serology Test 24",
-      "normalRange": "Reference 24"
-    },
-    {
-      "name": "Serology Test 25",
-      "normalRange": "Reference 25"
-    },
-    {
-      "name": "Serology Test 26",
-      "normalRange": "Reference 26"
-    },
-    {
-      "name": "Serology Test 27",
-      "normalRange": "Reference 27"
-    },
-    {
-      "name": "Serology Test 28",
-      "normalRange": "Reference 28"
-    },
-    {
-      "name": "Serology Test 29",
-      "normalRange": "Reference 29"
-    },
-    {
-      "name": "Serology Test 30",
-      "normalRange": "Reference 30"
-    }
+    { "name": "CRP", "normalRange": "< 10", "unit": "mg/L" },
+    { "name": "ASO Titre", "normalRange": "< 200", "unit": "IU/mL" },
+    { "name": "RF", "normalRange": "< 14", "unit": "IU/mL" },
+    { "name": "ANA", "normalRange": "Negative", "unit": "" },
+    { "name": "Anti-dsDNA", "normalRange": "< 30", "unit": "IU/mL" },
+    { "name": "HIV", "normalRange": "Non-Reactive", "unit": "" },
+    { "name": "Hepatitis B Surface Antigen", "normalRange": "Non-Reactive", "unit": "" },
+    { "name": "Hepatitis C Antibody", "normalRange": "Non-Reactive", "unit": "" },
+    { "name": "Typhidot IgM", "normalRange": "Negative", "unit": "" },
+    { "name": "Typhidot IgG", "normalRange": "Negative", "unit": "" },
+    { "name": "Brucella Antibody", "normalRange": "Negative", "unit": "" },
+    { "name": "Dengue IgM", "normalRange": "Negative", "unit": "" },
+    { "name": "Dengue IgG", "normalRange": "Negative", "unit": "" },
+    { "name": "Syphilis (VDRL)", "normalRange": "Non-Reactive", "unit": "" },
+    { "name": "H. pylori IgG", "normalRange": "Negative", "unit": "" },
+    { "name": "Rubella IgG", "normalRange": "Immune", "unit": "" },
+    { "name": "Rubella IgM", "normalRange": "Negative", "unit": "" },
+    { "name": "Toxoplasma IgG", "normalRange": "Negative", "unit": "" },
+    { "name": "Toxoplasma IgM", "normalRange": "Negative", "unit": "" },
+    { "name": "Measles IgG", "normalRange": "Positive", "unit": "" },
+    { "name": "CMV IgG", "normalRange": "Positive", "unit": "" },
+    { "name": "CMV IgM", "normalRange": "Negative", "unit": "" },
+    { "name": "COVID-19 IgM", "normalRange": "Negative", "unit": "" },
+    { "name": "COVID-19 IgG", "normalRange": "Positive", "unit": "" },
+    { "name": "HBsAb", "normalRange": "> 10", "unit": "mIU/mL" },
+    { "name": "HBeAg", "normalRange": "Negative", "unit": "" },
+    { "name": "Anti-HAV", "normalRange": "Positive", "unit": "" },
+    { "name": "Anti-HEV", "normalRange": "Negative", "unit": "" },
+    { "name": "Zika Virus IgM", "normalRange": "Negative", "unit": "" },
+    { "name": "EBV VCA IgG", "normalRange": "Positive", "unit": "" }
   ],
+
   "Histopathology": [
-    {
-      "name": "Histopathology Test 1",
-      "normalRange": "Reference 1"
-    },
-    {
-      "name": "Histopathology Test 2",
-      "normalRange": "Reference 2"
-    },
-    {
-      "name": "Histopathology Test 3",
-      "normalRange": "Reference 3"
-    },
-    {
-      "name": "Histopathology Test 4",
-      "normalRange": "Reference 4"
-    },
-    {
-      "name": "Histopathology Test 5",
-      "normalRange": "Reference 5"
-    },
-    {
-      "name": "Histopathology Test 6",
-      "normalRange": "Reference 6"
-    },
-    {
-      "name": "Histopathology Test 7",
-      "normalRange": "Reference 7"
-    },
-    {
-      "name": "Histopathology Test 8",
-      "normalRange": "Reference 8"
-    },
-    {
-      "name": "Histopathology Test 9",
-      "normalRange": "Reference 9"
-    },
-    {
-      "name": "Histopathology Test 10",
-      "normalRange": "Reference 10"
-    },
-    {
-      "name": "Histopathology Test 11",
-      "normalRange": "Reference 11"
-    },
-    {
-      "name": "Histopathology Test 12",
-      "normalRange": "Reference 12"
-    },
-    {
-      "name": "Histopathology Test 13",
-      "normalRange": "Reference 13"
-    },
-    {
-      "name": "Histopathology Test 14",
-      "normalRange": "Reference 14"
-    },
-    {
-      "name": "Histopathology Test 15",
-      "normalRange": "Reference 15"
-    },
-    {
-      "name": "Histopathology Test 16",
-      "normalRange": "Reference 16"
-    },
-    {
-      "name": "Histopathology Test 17",
-      "normalRange": "Reference 17"
-    },
-    {
-      "name": "Histopathology Test 18",
-      "normalRange": "Reference 18"
-    },
-    {
-      "name": "Histopathology Test 19",
-      "normalRange": "Reference 19"
-    },
-    {
-      "name": "Histopathology Test 20",
-      "normalRange": "Reference 20"
-    },
-    {
-      "name": "Histopathology Test 21",
-      "normalRange": "Reference 21"
-    },
-    {
-      "name": "Histopathology Test 22",
-      "normalRange": "Reference 22"
-    },
-    {
-      "name": "Histopathology Test 23",
-      "normalRange": "Reference 23"
-    },
-    {
-      "name": "Histopathology Test 24",
-      "normalRange": "Reference 24"
-    },
-    {
-      "name": "Histopathology Test 25",
-      "normalRange": "Reference 25"
-    },
-    {
-      "name": "Histopathology Test 26",
-      "normalRange": "Reference 26"
-    },
-    {
-      "name": "Histopathology Test 27",
-      "normalRange": "Reference 27"
-    },
-    {
-      "name": "Histopathology Test 28",
-      "normalRange": "Reference 28"
-    },
-    {
-      "name": "Histopathology Test 29",
-      "normalRange": "Reference 29"
-    },
-    {
-      "name": "Histopathology Test 30",
-      "normalRange": "Reference 30"
-    }
+    { "name": "Biopsy - Liver", "normalRange": "See report", "unit": "" },
+    { "name": "Biopsy - Skin", "normalRange": "See report", "unit": "" },
+    { "name": "Biopsy - Kidney", "normalRange": "See report", "unit": "" },
+    { "name": "Biopsy - Prostate", "normalRange": "See report", "unit": "" },
+    { "name": "Biopsy - Breast", "normalRange": "See report", "unit": "" },
+    { "name": "Biopsy - Lung", "normalRange": "See report", "unit": "" },
+    { "name": "Biopsy - Bone", "normalRange": "See report", "unit": "" },
+    { "name": "Endometrial Biopsy", "normalRange": "See report", "unit": "" },
+    { "name": "Cervical Biopsy", "normalRange": "See report", "unit": "" },
+    { "name": "Testicular Biopsy", "normalRange": "See report", "unit": "" },
+    { "name": "Gastric Biopsy", "normalRange": "See report", "unit": "" },
+    { "name": "Intestinal Biopsy", "normalRange": "See report", "unit": "" },
+    { "name": "Lymph Node Biopsy", "normalRange": "See report", "unit": "" },
+    { "name": "Muscle Biopsy", "normalRange": "See report", "unit": "" },
+    { "name": "Esophageal Biopsy", "normalRange": "See report", "unit": "" },
+    { "name": "Rectal Biopsy", "normalRange": "See report", "unit": "" },
+    { "name": "Brain Biopsy", "normalRange": "See report", "unit": "" },
+    { "name": "Ovarian Biopsy", "normalRange": "See report", "unit": "" },
+    { "name": "Pancreatic Biopsy", "normalRange": "See report", "unit": "" },
+    { "name": "Thyroid Biopsy", "normalRange": "See report", "unit": "" },
+    { "name": "Bone Marrow Biopsy", "normalRange": "See report", "unit": "" },
+    { "name": "Spleen Biopsy", "normalRange": "See report", "unit": "" },
+    { "name": "Placental Biopsy", "normalRange": "See report", "unit": "" },
+    { "name": "Ureter Biopsy", "normalRange": "See report", "unit": "" },
+    { "name": "Urethra Biopsy", "normalRange": "See report", "unit": "" },
+    { "name": "Vulva Biopsy", "normalRange": "See report", "unit": "" },
+    { "name": "Bladder Biopsy", "normalRange": "See report", "unit": "" },
+    { "name": "Nasal Biopsy", "normalRange": "See report", "unit": "" },
+    { "name": "Parotid Gland Biopsy", "normalRange": "See report", "unit": "" },
+    { "name": "Pituitary Biopsy", "normalRange": "See report", "unit": "" }
   ],
+
   "Microbiology": [
-    {
-      "name": "Microbiology Test 1",
-      "normalRange": "Reference 1"
-    },
-    {
-      "name": "Microbiology Test 2",
-      "normalRange": "Reference 2"
-    },
-    {
-      "name": "Microbiology Test 3",
-      "normalRange": "Reference 3"
-    },
-    {
-      "name": "Microbiology Test 4",
-      "normalRange": "Reference 4"
-    },
-    {
-      "name": "Microbiology Test 5",
-      "normalRange": "Reference 5"
-    },
-    {
-      "name": "Microbiology Test 6",
-      "normalRange": "Reference 6"
-    },
-    {
-      "name": "Microbiology Test 7",
-      "normalRange": "Reference 7"
-    },
-    {
-      "name": "Microbiology Test 8",
-      "normalRange": "Reference 8"
-    },
-    {
-      "name": "Microbiology Test 9",
-      "normalRange": "Reference 9"
-    },
-    {
-      "name": "Microbiology Test 10",
-      "normalRange": "Reference 10"
-    },
-    {
-      "name": "Microbiology Test 11",
-      "normalRange": "Reference 11"
-    },
-    {
-      "name": "Microbiology Test 12",
-      "normalRange": "Reference 12"
-    },
-    {
-      "name": "Microbiology Test 13",
-      "normalRange": "Reference 13"
-    },
-    {
-      "name": "Microbiology Test 14",
-      "normalRange": "Reference 14"
-    },
-    {
-      "name": "Microbiology Test 15",
-      "normalRange": "Reference 15"
-    },
-    {
-      "name": "Microbiology Test 16",
-      "normalRange": "Reference 16"
-    },
-    {
-      "name": "Microbiology Test 17",
-      "normalRange": "Reference 17"
-    },
-    {
-      "name": "Microbiology Test 18",
-      "normalRange": "Reference 18"
-    },
-    {
-      "name": "Microbiology Test 19",
-      "normalRange": "Reference 19"
-    },
-    {
-      "name": "Microbiology Test 20",
-      "normalRange": "Reference 20"
-    },
-    {
-      "name": "Microbiology Test 21",
-      "normalRange": "Reference 21"
-    },
-    {
-      "name": "Microbiology Test 22",
-      "normalRange": "Reference 22"
-    },
-    {
-      "name": "Microbiology Test 23",
-      "normalRange": "Reference 23"
-    },
-    {
-      "name": "Microbiology Test 24",
-      "normalRange": "Reference 24"
-    },
-    {
-      "name": "Microbiology Test 25",
-      "normalRange": "Reference 25"
-    },
-    {
-      "name": "Microbiology Test 26",
-      "normalRange": "Reference 26"
-    },
-    {
-      "name": "Microbiology Test 27",
-      "normalRange": "Reference 27"
-    },
-    {
-      "name": "Microbiology Test 28",
-      "normalRange": "Reference 28"
-    },
-    {
-      "name": "Microbiology Test 29",
-      "normalRange": "Reference 29"
-    },
-    {
-      "name": "Microbiology Test 30",
-      "normalRange": "Reference 30"
-    }
+    { "name": "Urine Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Throat Swab Culture", "normalRange": "No Pathogen", "unit": "" },
+    { "name": "Blood Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Sputum Culture", "normalRange": "No Pathogen", "unit": "" },
+    { "name": "Stool Culture", "normalRange": "No Pathogen", "unit": "" },
+    { "name": "Wound Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "CSF Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Ear Swab Culture", "normalRange": "No Pathogen", "unit": "" },
+    { "name": "Eye Swab Culture", "normalRange": "No Pathogen", "unit": "" },
+    { "name": "Nasal Swab Culture", "normalRange": "No Pathogen", "unit": "" },
+    { "name": "Vaginal Swab Culture", "normalRange": "No Pathogen", "unit": "" },
+    { "name": "Semen Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Pus Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Bone Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Catheter Tip Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Bronchial Wash Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Pleural Fluid Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Peritoneal Fluid Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Synovial Fluid Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Tissue Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Abscess Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Dental Swab Culture", "normalRange": "No Pathogen", "unit": "" },
+    { "name": "Eye Swab for Chlamydia", "normalRange": "Negative", "unit": "" },
+    { "name": "Nasal Swab for MRSA", "normalRange": "Negative", "unit": "" },
+    { "name": "Rectal Swab Culture", "normalRange": "No Pathogen", "unit": "" },
+    { "name": "Skin Swab Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Throat Swab for Beta-Hemolytic Strep", "normalRange": "Negative", "unit": "" },
+    { "name": "Urine Culture for Candida", "normalRange": "Negative", "unit": "" },
+    { "name": "Wound Swab for Pseudomonas", "normalRange": "Negative", "unit": "" },
+    { "name": "CSF Culture for Cryptococcus", "normalRange": "Negative", "unit": "" }
   ],
-  "Bio chemistry": [
-    {
-      "name": "Biochemistry Test 1",
-      "normalRange": "Reference 1"
-    },
-    {
-      "name": "Biochemistry Test 2",
-      "normalRange": "Reference 2"
-    },
-    {
-      "name": "Biochemistry Test 3",
-      "normalRange": "Reference 3"
-    },
-    {
-      "name": "Biochemistry Test 4",
-      "normalRange": "Reference 4"
-    },
-    {
-      "name": "Biochemistry Test 5",
-      "normalRange": "Reference 5"
-    },
-    {
-      "name": "Biochemistry Test 6",
-      "normalRange": "Reference 6"
-    },
-    {
-      "name": "Biochemistry Test 7",
-      "normalRange": "Reference 7"
-    },
-    {
-      "name": "Biochemistry Test 8",
-      "normalRange": "Reference 8"
-    },
-    {
-      "name": "Biochemistry Test 9",
-      "normalRange": "Reference 9"
-    },
-    {
-      "name": "Biochemistry Test 10",
-      "normalRange": "Reference 10"
-    },
-    {
-      "name": "Biochemistry Test 11",
-      "normalRange": "Reference 11"
-    },
-    {
-      "name": "Biochemistry Test 12",
-      "normalRange": "Reference 12"
-    },
-    {
-      "name": "Biochemistry Test 13",
-      "normalRange": "Reference 13"
-    },
-    {
-      "name": "Biochemistry Test 14",
-      "normalRange": "Reference 14"
-    },
-    {
-      "name": "Biochemistry Test 15",
-      "normalRange": "Reference 15"
-    },
-    {
-      "name": "Biochemistry Test 16",
-      "normalRange": "Reference 16"
-    },
-    {
-      "name": "Biochemistry Test 17",
-      "normalRange": "Reference 17"
-    },
-    {
-      "name": "Biochemistry Test 18",
-      "normalRange": "Reference 18"
-    },
-    {
-      "name": "Biochemistry Test 19",
-      "normalRange": "Reference 19"
-    },
-    {
-      "name": "Biochemistry Test 20",
-      "normalRange": "Reference 20"
-    },
-    {
-      "name": "Biochemistry Test 21",
-      "normalRange": "Reference 21"
-    },
-    {
-      "name": "Biochemistry Test 22",
-      "normalRange": "Reference 22"
-    },
-    {
-      "name": "Biochemistry Test 23",
-      "normalRange": "Reference 23"
-    },
-    {
-      "name": "Biochemistry Test 24",
-      "normalRange": "Reference 24"
-    },
-    {
-      "name": "Biochemistry Test 25",
-      "normalRange": "Reference 25"
-    },
-    {
-      "name": "Biochemistry Test 26",
-      "normalRange": "Reference 26"
-    },
-    {
-      "name": "Biochemistry Test 27",
-      "normalRange": "Reference 27"
-    },
-    {
-      "name": "Biochemistry Test 28",
-      "normalRange": "Reference 28"
-    },
-    {
-      "name": "Biochemistry Test 29",
-      "normalRange": "Reference 29"
-    },
-    {
-      "name": "Biochemistry Test 30",
-      "normalRange": "Reference 30"
-    }
+
+  "Biochemistry": [
+    { "name": "Glucose (Fasting)", "normalRange": "70 - 110", "unit": "mg/dL" },
+    { "name": "Glucose (Random)", "normalRange": "< 140", "unit": "mg/dL" },
+    { "name": "Urea", "normalRange": "20 - 40", "unit": "mg/dL" },
+    { "name": "Creatinine", "normalRange": "0.6 - 1.3", "unit": "mg/dL" },
+    { "name": "Uric Acid", "normalRange": "3.5 - 7.2", "unit": "mg/dL" },
+    { "name": "Cholesterol", "normalRange": "< 200", "unit": "mg/dL" },
+    { "name": "Triglycerides", "normalRange": "< 150", "unit": "mg/dL" },
+    { "name": "HDL Cholesterol", "normalRange": "> 40", "unit": "mg/dL" },
+    { "name": "LDL Cholesterol", "normalRange": "< 130", "unit": "mg/dL" },
+    { "name": "VLDL Cholesterol", "normalRange": "5 - 40", "unit": "mg/dL" },
+    { "name": "Total Protein", "normalRange": "6.4 - 8.3", "unit": "g/dL" },
+    { "name": "Albumin", "normalRange": "3.5 - 5.0", "unit": "g/dL" },
+    { "name": "Globulin", "normalRange": "2.0 - 3.5", "unit": "g/dL" },
+    { "name": "Bilirubin (Total)", "normalRange": "0.3 - 1.2", "unit": "mg/dL" },
+    { "name": "Bilirubin (Direct)", "normalRange": "0.1 - 0.3", "unit": "mg/dL" },
+    { "name": "Bilirubin (Indirect)", "normalRange": "0.2 - 0.8", "unit": "mg/dL" },
+    { "name": "Alkaline Phosphatase", "normalRange": "44 - 147", "unit": "IU/L" },
+    { "name": "SGPT (ALT)", "normalRange": "7 - 56", "unit": "IU/L" },
+    { "name": "SGOT (AST)", "normalRange": "10 - 40", "unit": "IU/L" },
+    { "name": "GGT", "normalRange": "9 - 48", "unit": "IU/L" },
+    { "name": "LDH", "normalRange": "140 - 280", "unit": "IU/L" },
+    { "name": "Amylase", "normalRange": "23 - 85", "unit": "IU/L" },
+    { "name": "Lipase", "normalRange": "0 - 160", "unit": "IU/L" },
+    { "name": "Calcium", "normalRange": "8.5 - 10.5", "unit": "mg/dL" },
+    { "name": "Phosphorus", "normalRange": "2.5 - 4.5", "unit": "mg/dL" },
+    { "name": "Magnesium", "normalRange": "1.7 - 2.2", "unit": "mg/dL" },
+    { "name": "Sodium", "normalRange": "135 - 145", "unit": "mmol/L" },
+    { "name": "Potassium", "normalRange": "3.5 - 5.0", "unit": "mmol/L" },
+    { "name": "Chloride", "normalRange": "98 - 106", "unit": "mmol/L" },
+    { "name": "CO2", "normalRange": "23 - 29", "unit": "mmol/L" }
   ],
-  "Culture tests": [
-    {
-      "name": "Culture Test 1",
-      "normalRange": "Reference 1"
-    },
-    {
-      "name": "Culture Test 2",
-      "normalRange": "Reference 2"
-    },
-    {
-      "name": "Culture Test 3",
-      "normalRange": "Reference 3"
-    },
-    {
-      "name": "Culture Test 4",
-      "normalRange": "Reference 4"
-    },
-    {
-      "name": "Culture Test 5",
-      "normalRange": "Reference 5"
-    },
-    {
-      "name": "Culture Test 6",
-      "normalRange": "Reference 6"
-    },
-    {
-      "name": "Culture Test 7",
-      "normalRange": "Reference 7"
-    },
-    {
-      "name": "Culture Test 8",
-      "normalRange": "Reference 8"
-    },
-    {
-      "name": "Culture Test 9",
-      "normalRange": "Reference 9"
-    },
-    {
-      "name": "Culture Test 10",
-      "normalRange": "Reference 10"
-    },
-    {
-      "name": "Culture Test 11",
-      "normalRange": "Reference 11"
-    },
-    {
-      "name": "Culture Test 12",
-      "normalRange": "Reference 12"
-    },
-    {
-      "name": "Culture Test 13",
-      "normalRange": "Reference 13"
-    },
-    {
-      "name": "Culture Test 14",
-      "normalRange": "Reference 14"
-    },
-    {
-      "name": "Culture Test 15",
-      "normalRange": "Reference 15"
-    },
-    {
-      "name": "Culture Test 16",
-      "normalRange": "Reference 16"
-    },
-    {
-      "name": "Culture Test 17",
-      "normalRange": "Reference 17"
-    },
-    {
-      "name": "Culture Test 18",
-      "normalRange": "Reference 18"
-    },
-    {
-      "name": "Culture Test 19",
-      "normalRange": "Reference 19"
-    },
-    {
-      "name": "Culture Test 20",
-      "normalRange": "Reference 20"
-    },
-    {
-      "name": "Culture Test 21",
-      "normalRange": "Reference 21"
-    },
-    {
-      "name": "Culture Test 22",
-      "normalRange": "Reference 22"
-    },
-    {
-      "name": "Culture Test 23",
-      "normalRange": "Reference 23"
-    },
-    {
-      "name": "Culture Test 24",
-      "normalRange": "Reference 24"
-    },
-    {
-      "name": "Culture Test 25",
-      "normalRange": "Reference 25"
-    },
-    {
-      "name": "Culture Test 26",
-      "normalRange": "Reference 26"
-    },
-    {
-      "name": "Culture Test 27",
-      "normalRange": "Reference 27"
-    },
-    {
-      "name": "Culture Test 28",
-      "normalRange": "Reference 28"
-    },
-    {
-      "name": "Culture Test 29",
-      "normalRange": "Reference 29"
-    },
-    {
-      "name": "Culture Test 30",
-      "normalRange": "Reference 30"
-    }
+
+  "Culture Tests": [
+    { "name": "Blood Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Urine Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Sputum Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Throat Swab Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Wound Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "CSF Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Ear Swab Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Eye Swab Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Nasal Swab Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Vaginal Swab Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Semen Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Pus Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Bone Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Catheter Tip Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Bronchial Wash Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Pleural Fluid Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Peritoneal Fluid Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Synovial Fluid Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Tissue Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Abscess Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Dental Swab Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Eye Swab for Chlamydia", "normalRange": "Negative", "unit": "" },
+    { "name": "Nasal Swab for MRSA", "normalRange": "Negative", "unit": "" },
+    { "name": "Rectal Swab Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Skin Swab Culture", "normalRange": "No Growth", "unit": "" },
+    { "name": "Throat Swab for Beta-Hemolytic Strep", "normalRange": "Negative", "unit": "" },
+    { "name": "Urine Culture for Candida", "normalRange": "Negative", "unit": "" },
+    { "name": "Wound Swab for Pseudomonas", "normalRange": "Negative", "unit": "" },
+    { "name": "CSF Culture for Cryptococcus", "normalRange": "Negative", "unit": "" }
   ],
-  "Special chemistry test": [
-    {
-      "name": "Special Chemistry Test 1",
-      "normalRange": "Reference 1"
-    },
-    {
-      "name": "Special Chemistry Test 2",
-      "normalRange": "Reference 2"
-    },
-    {
-      "name": "Special Chemistry Test 3",
-      "normalRange": "Reference 3"
-    },
-    {
-      "name": "Special Chemistry Test 4",
-      "normalRange": "Reference 4"
-    },
-    {
-      "name": "Special Chemistry Test 5",
-      "normalRange": "Reference 5"
-    },
-    {
-      "name": "Special Chemistry Test 6",
-      "normalRange": "Reference 6"
-    },
-    {
-      "name": "Special Chemistry Test 7",
-      "normalRange": "Reference 7"
-    },
-    {
-      "name": "Special Chemistry Test 8",
-      "normalRange": "Reference 8"
-    },
-    {
-      "name": "Special Chemistry Test 9",
-      "normalRange": "Reference 9"
-    },
-    {
-      "name": "Special Chemistry Test 10",
-      "normalRange": "Reference 10"
-    },
-    {
-      "name": "Special Chemistry Test 11",
-      "normalRange": "Reference 11"
-    },
-    {
-      "name": "Special Chemistry Test 12",
-      "normalRange": "Reference 12"
-    },
-    {
-      "name": "Special Chemistry Test 13",
-      "normalRange": "Reference 13"
-    },
-    {
-      "name": "Special Chemistry Test 14",
-      "normalRange": "Reference 14"
-    },
-    {
-      "name": "Special Chemistry Test 15",
-      "normalRange": "Reference 15"
-    },
-    {
-      "name": "Special Chemistry Test 16",
-      "normalRange": "Reference 16"
-    },
-    {
-      "name": "Special Chemistry Test 17",
-      "normalRange": "Reference 17"
-    },
-    {
-      "name": "Special Chemistry Test 18",
-      "normalRange": "Reference 18"
-    },
-    {
-      "name": "Special Chemistry Test 19",
-      "normalRange": "Reference 19"
-    },
-    {
-      "name": "Special Chemistry Test 20",
-      "normalRange": "Reference 20"
-    },
-    {
-      "name": "Special Chemistry Test 21",
-      "normalRange": "Reference 21"
-    },
-    {
-      "name": "Special Chemistry Test 22",
-      "normalRange": "Reference 22"
-    },
-    {
-      "name": "Special Chemistry Test 23",
-      "normalRange": "Reference 23"
-    },
-    {
-      "name": "Special Chemistry Test 24",
-      "normalRange": "Reference 24"
-    },
-    {
-      "name": "Special Chemistry Test 25",
-      "normalRange": "Reference 25"
-    },
-    {
-      "name": "Special Chemistry Test 26",
-      "normalRange": "Reference 26"
-    },
-    {
-      "name": "Special Chemistry Test 27",
-      "normalRange": "Reference 27"
-    },
-    {
-      "name": "Special Chemistry Test 28",
-      "normalRange": "Reference 28"
-    },
-    {
-      "name": "Special Chemistry Test 29",
-      "normalRange": "Reference 29"
-    },
-    {
-      "name": "Special Chemistry Test 30",
-      "normalRange": "Reference 30"
-    }
+
+  "Special Chemistry": [
+    { "name": "TSH", "normalRange": "0.4 - 4.0", "unit": "uIU/mL" },
+    { "name": "Free T3", "normalRange": "2.0 - 4.4", "unit": "pg/mL" },
+    { "name": "Free T4", "normalRange": "0.9 - 1.7", "unit": "ng/dL" },
+    { "name": "Parathyroid Hormone", "normalRange": "10 - 65", "unit": "pg/mL" },
+    { "name": "Cortisol (AM)", "normalRange": "5 - 25", "unit": "µg/dL" },
+    { "name": "Insulin", "normalRange": "2.6 - 24.9", "unit": "µIU/mL" },
+    { "name": "Prolactin", "normalRange": "4 - 23", "unit": "ng/mL" },
+    { "name": "Testosterone", "normalRange": "300 - 1000", "unit": "ng/dL" },
+    { "name": "Estradiol", "normalRange": "15 - 350", "unit": "pg/mL" },
+    { "name": "FSH", "normalRange": "4.7 - 21.5", "unit": "mIU/mL" },
+    { "name": "LH", "normalRange": "1.2 - 12.0", "unit": "mIU/mL" },
+    { "name": "Vitamin D", "normalRange": "30 - 100", "unit": "ng/mL" },
+    { "name": "Ferritin", "normalRange": "20 - 300", "unit": "ng/mL" },
+    { "name": "C-Peptide", "normalRange": "0.8 - 3.1", "unit": "ng/mL" },
+    { "name": "HBA1c", "normalRange": "< 5.7", "unit": "%" },
+    { "name": "Homocysteine", "normalRange": "5 - 15", "unit": "µmol/L" },
+    { "name": "Creatine Kinase", "normalRange": "20 - 200", "unit": "U/L" },
+    { "name": "Lactate Dehydrogenase", "normalRange": "140 - 280", "unit": "U/L" },
+    { "name": "Amylase", "normalRange": "30 - 110", "unit": "U/L" },
+    { "name": "Lipase", "normalRange": "0 - 160", "unit": "U/L" },
+    { "name": "BNP", "normalRange": "< 100", "unit": "pg/mL" },
+    { "name": "Troponin I", "normalRange": "< 0.04", "unit": "ng/mL" },
+    { "name": "Anti-TPO", "normalRange": "< 35", "unit": "IU/mL" },
+    { "name": "Anti-TG", "normalRange": "< 40", "unit": "IU/mL" },
+    { "name": "CEA", "normalRange": "< 5", "unit": "ng/mL" },
+    { "name": "CA 125", "normalRange": "< 35", "unit": "U/mL" },
+    { "name": "CA 19-9", "normalRange": "< 37", "unit": "U/mL" },
+    { "name": "AFP", "normalRange": "< 10", "unit": "ng/mL" },
+    { "name": "PSA", "normalRange": "< 4", "unit": "ng/mL" }
   ],
-  "Molecular biology": [
-    {
-      "name": "Molecular Biology Test 1",
-      "normalRange": "Reference 1"
-    },
-    {
-      "name": "Molecular Biology Test 2",
-      "normalRange": "Reference 2"
-    },
-    {
-      "name": "Molecular Biology Test 3",
-      "normalRange": "Reference 3"
-    },
-    {
-      "name": "Molecular Biology Test 4",
-      "normalRange": "Reference 4"
-    },
-    {
-      "name": "Molecular Biology Test 5",
-      "normalRange": "Reference 5"
-    },
-    {
-      "name": "Molecular Biology Test 6",
-      "normalRange": "Reference 6"
-    },
-    {
-      "name": "Molecular Biology Test 7",
-      "normalRange": "Reference 7"
-    },
-    {
-      "name": "Molecular Biology Test 8",
-      "normalRange": "Reference 8"
-    },
-    {
-      "name": "Molecular Biology Test 9",
-      "normalRange": "Reference 9"
-    },
-    {
-      "name": "Molecular Biology Test 10",
-      "normalRange": "Reference 10"
-    },
-    {
-      "name": "Molecular Biology Test 11",
-      "normalRange": "Reference 11"
-    },
-    {
-      "name": "Molecular Biology Test 12",
-      "normalRange": "Reference 12"
-    },
-    {
-      "name": "Molecular Biology Test 13",
-      "normalRange": "Reference 13"
-    },
-    {
-      "name": "Molecular Biology Test 14",
-      "normalRange": "Reference 14"
-    },
-    {
-      "name": "Molecular Biology Test 15",
-      "normalRange": "Reference 15"
-    },
-    {
-      "name": "Molecular Biology Test 16",
-      "normalRange": "Reference 16"
-    },
-    {
-      "name": "Molecular Biology Test 17",
-      "normalRange": "Reference 17"
-    },
-    {
-      "name": "Molecular Biology Test 18",
-      "normalRange": "Reference 18"
-    },
-    {
-      "name": "Molecular Biology Test 19",
-      "normalRange": "Reference 19"
-    },
-    {
-      "name": "Molecular Biology Test 20",
-      "normalRange": "Reference 20"
-    },
-    {
-      "name": "Molecular Biology Test 21",
-      "normalRange": "Reference 21"
-    },
-    {
-      "name": "Molecular Biology Test 22",
-      "normalRange": "Reference 22"
-    },
-    {
-      "name": "Molecular Biology Test 23",
-      "normalRange": "Reference 23"
-    },
-    {
-      "name": "Molecular Biology Test 24",
-      "normalRange": "Reference 24"
-    },
-    {
-      "name": "Molecular Biology Test 25",
-      "normalRange": "Reference 25"
-    },
-    {
-      "name": "Molecular Biology Test 26",
-      "normalRange": "Reference 26"
-    },
-    {
-      "name": "Molecular Biology Test 27",
-      "normalRange": "Reference 27"
-    },
-    {
-      "name": "Molecular Biology Test 28",
-      "normalRange": "Reference 28"
-    },
-    {
-      "name": "Molecular Biology Test 29",
-      "normalRange": "Reference 29"
-    },
-    {
-      "name": "Molecular Biology Test 30",
-      "normalRange": "Reference 30"
-    }
+
+  "Molecular Biology": [
+    { "name": "PCR Hepatitis B", "normalRange": "Negative", "unit": "" },
+    { "name": "PCR Hepatitis C", "normalRange": "Negative", "unit": "" },
+    { "name": "PCR HIV", "normalRange": "Negative", "unit": "" },
+    { "name": "PCR COVID-19", "normalRange": "Negative", "unit": "" },
+    { "name": "Gene Mutation Analysis", "normalRange": "Negative", "unit": "" },
+    { "name": "BRCA1/2 Mutation", "normalRange": "Negative", "unit": "" },
+    { "name": "EGFR Mutation", "normalRange": "Negative", "unit": "" },
+    { "name": "KRAS Mutation", "normalRange": "Negative", "unit": "" },
+    { "name": "BRAF Mutation", "normalRange": "Negative", "unit": "" },
+    { "name": "JAK2 Mutation", "normalRange": "Negative", "unit": "" },
+    { "name": "FLT3 Mutation", "normalRange": "Negative", "unit": "" },
+    { "name": "NPM1 Mutation", "normalRange": "Negative", "unit": "" },
+    { "name": "ALK Mutation", "normalRange": "Negative", "unit": "" },
+    { "name": "P53 Mutation", "normalRange": "Negative", "unit": "" },
+    { "name": "MLH1 Methylation", "normalRange": "Negative", "unit": "" },
+    { "name": "MGMT Methylation", "normalRange": "Negative", "unit": "" },
+    { "name": "MSI Testing", "normalRange": "Negative", "unit": "" },
+    { "name": "CFTR Mutation", "normalRange": "Negative", "unit": "" },
+    { "name": "Hemochromatosis Gene", "normalRange": "Negative", "unit": "" },
+    { "name": "Thalassemia Mutation", "normalRange": "Negative", "unit": "" },
+    { "name": "Sickle Cell Mutation", "normalRange": "Negative", "unit": "" },
+    { "name": "Tay-Sachs Mutation", "normalRange": "Negative", "unit": "" },
+    { "name": "Fragile X Syndrome", "normalRange": "Negative", "unit": "" },
+    { "name": "Huntington's Disease Gene", "normalRange": "Negative", "unit": "" },
+    { "name": "Spinal Muscular Atrophy Gene", "normalRange": "Negative", "unit": "" },
+    { "name": "Duchenne Muscular Dystrophy Gene", "normalRange": "Negative", "unit": "" },
+    { "name": "Marfan Syndrome Gene", "normalRange": "Negative", "unit": "" },
+    { "name": "Wilson's Disease Gene", "normalRange": "Negative", "unit": "" },
+    { "name": "Gaucher Disease Gene", "normalRange": "Negative", "unit": "" }
   ],
-  "Blood banking": [
-    {
-      "name": "Blood Bank Test 1",
-      "normalRange": "Reference 1"
-    },
-    {
-      "name": "Blood Bank Test 2",
-      "normalRange": "Reference 2"
-    },
-    {
-      "name": "Blood Bank Test 3",
-      "normalRange": "Reference 3"
-    },
-    {
-      "name": "Blood Bank Test 4",
-      "normalRange": "Reference 4"
-    },
-    {
-      "name": "Blood Bank Test 5",
-      "normalRange": "Reference 5"
-    },
-    {
-      "name": "Blood Bank Test 6",
-      "normalRange": "Reference 6"
-    },
-    {
-      "name": "Blood Bank Test 7",
-      "normalRange": "Reference 7"
-    },
-    {
-      "name": "Blood Bank Test 8",
-      "normalRange": "Reference 8"
-    },
-    {
-      "name": "Blood Bank Test 9",
-      "normalRange": "Reference 9"
-    },
-    {
-      "name": "Blood Bank Test 10",
-      "normalRange": "Reference 10"
-    },
-    {
-      "name": "Blood Bank Test 11",
-      "normalRange": "Reference 11"
-    },
-    {
-      "name": "Blood Bank Test 12",
-      "normalRange": "Reference 12"
-    },
-    {
-      "name": "Blood Bank Test 13",
-      "normalRange": "Reference 13"
-    },
-    {
-      "name": "Blood Bank Test 14",
-      "normalRange": "Reference 14"
-    },
-    {
-      "name": "Blood Bank Test 15",
-      "normalRange": "Reference 15"
-    },
-    {
-      "name": "Blood Bank Test 16",
-      "normalRange": "Reference 16"
-    },
-    {
-      "name": "Blood Bank Test 17",
-      "normalRange": "Reference 17"
-    },
-    {
-      "name": "Blood Bank Test 18",
-      "normalRange": "Reference 18"
-    },
-    {
-      "name": "Blood Bank Test 19",
-      "normalRange": "Reference 19"
-    },
-    {
-      "name": "Blood Bank Test 20",
-      "normalRange": "Reference 20"
-    },
-    {
-      "name": "Blood Bank Test 21",
-      "normalRange": "Reference 21"
-    },
-    {
-      "name": "Blood Bank Test 22",
-      "normalRange": "Reference 22"
-    },
-    {
-      "name": "Blood Bank Test 23",
-      "normalRange": "Reference 23"
-    },
-    {
-      "name": "Blood Bank Test 24",
-      "normalRange": "Reference 24"
-    },
-    {
-      "name": "Blood Bank Test 25",
-      "normalRange": "Reference 25"
-    },
-    {
-      "name": "Blood Bank Test 26",
-      "normalRange": "Reference 26"
-    },
-    {
-      "name": "Blood Bank Test 27",
-      "normalRange": "Reference 27"
-    },
-    {
-      "name": "Blood Bank Test 28",
-      "normalRange": "Reference 28"
-    },
-    {
-      "name": "Blood Bank Test 29",
-      "normalRange": "Reference 29"
-    },
-    {
-      "name": "Blood Bank Test 30",
-      "normalRange": "Reference 30"
-    }
+
+  "Blood Banking": [
+    { "name": "ABO Blood Group", "normalRange": "A/B/AB/O", "unit": "" },
+    { "name": "Rh Factor", "normalRange": "Positive/Negative", "unit": "" },
+    { "name": "Antibody Screen", "normalRange": "Negative", "unit": "" },
+    { "name": "Direct Coombs Test", "normalRange": "Negative", "unit": "" },
+    { "name": "Indirect Coombs Test", "normalRange": "Negative", "unit": "" },
+    { "name": "Cross Match", "normalRange": "Compatible", "unit": "" },
+    { "name": "Blood Group Antigens", "normalRange": "Normal", "unit": "" },
+    { "name": "Red Cell Antibody Identification", "normalRange": "Negative", "unit": "" },
+    { "name": "Platelet Antibody Screen", "normalRange": "Negative", "unit": "" },
+    { "name": "Leukocyte Antibody Screen", "normalRange": "Negative", "unit": "" },
+    { "name": "HLA Typing", "normalRange": "Match", "unit": "" },
+    { "name": "Blood Donation Screening", "normalRange": "Negative", "unit": "" },
+    { "name": "Blood Storage Check", "normalRange": "Within limits", "unit": "" },
+    { "name": "Transfusion Reaction Test", "normalRange": "None", "unit": "" },
+    { "name": "Hemoglobinopathy Screening", "normalRange": "Negative", "unit": "" },
+    { "name": "Sickle Cell Test", "normalRange": "Negative", "unit": "" },
+    { "name": "G6PD Screening", "normalRange": "Normal", "unit": "" },
+    { "name": "Blood Compatibility Test", "normalRange": "Compatible", "unit": "" },
+    { "name": "Blood Group Serology", "normalRange": "Normal", "unit": "" },
+    { "name": "Platelet Crossmatch", "normalRange": "Compatible", "unit": "" },
+    { "name": "Antigen Typing", "normalRange": "Normal", "unit": "" },
+    { "name": "Blood Donor Screening", "normalRange": "Negative", "unit": "" },
+    { "name": "Blood Unit Quality Control", "normalRange": "Passed", "unit": "" },
+    { "name": "Blood Transfusion Safety", "normalRange": "Safe", "unit": "" },
+    { "name": "Antibody Identification Panel", "normalRange": "Negative", "unit": "" },
+    { "name": "Platelet Antibody Identification", "normalRange": "Negative", "unit": "" },
+    { "name": "Red Cell Phenotyping", "normalRange": "Normal", "unit": "" },
+    { "name": "Blood Group Genotyping", "normalRange": "Normal", "unit": "" },
+    { "name": "Hemolysis Test", "normalRange": "Negative", "unit": "" }
+  ],
+
+  "Immunology": [
+    { "name": "ANA", "normalRange": "Negative", "unit": "" },
+    { "name": "CRP", "normalRange": "< 10", "unit": "mg/L" },
+    { "name": "RF", "normalRange": "< 14", "unit": "IU/mL" },
+    { "name": "Anti-dsDNA", "normalRange": "< 30", "unit": "IU/mL" },
+    { "name": "Anti-CCP", "normalRange": "< 20", "unit": "U/mL" },
+    { "name": "Complement C3", "normalRange": "90 - 180", "unit": "mg/dL" },
+    { "name": "Complement C4", "normalRange": "10 - 40", "unit": "mg/dL" },
+    { "name": "IgG", "normalRange": "700 - 1600", "unit": "mg/dL" },
+    { "name": "IgA", "normalRange": "70 - 400", "unit": "mg/dL" },
+    { "name": "IgM", "normalRange": "40 - 230", "unit": "mg/dL" },
+    { "name": "IgE", "normalRange": "< 100", "unit": "IU/mL" },
+    { "name": "Allergen-specific IgE", "normalRange": "Negative", "unit": "" },
+    { "name": "C1 Esterase Inhibitor", "normalRange": "21 - 39", "unit": "mg/dL" },
+    { "name": "Anti-Nuclear Antibody Panel", "normalRange": "Negative", "unit": "" },
+    { "name": "Anti-Smith Antibody", "normalRange": "Negative", "unit": "" },
+    { "name": "Anti-RNP Antibody", "normalRange": "Negative", "unit": "" },
+    { "name": "Anti-Jo-1 Antibody", "normalRange": "Negative", "unit": "" },
+    { "name": "Anti-Scl-70 Antibody", "normalRange": "Negative", "unit": "" },
+    { "name": "Anti-Histone Antibody", "normalRange": "Negative", "unit": "" },
+    { "name": "Anti-Phospholipid Antibody", "normalRange": "Negative", "unit": "" },
+    { "name": "Anti-Cardiolipin Antibody", "normalRange": "Negative", "unit": "" },
+    { "name": "Anti-Beta2 Glycoprotein", "normalRange": "Negative", "unit": "" },
+    { "name": "Anti-SSA Antibody", "normalRange": "Negative", "unit": "" },
+    { "name": "Anti-SSB Antibody", "normalRange": "Negative", "unit": "" },
+    { "name": "Anti-Mitochondrial Antibody", "normalRange": "Negative", "unit": "" },
+    { "name": "Anti-Smooth Muscle Antibody", "normalRange": "Negative", "unit": "" },
+    { "name": "Anti-Neutrophil Cytoplasmic Antibody", "normalRange": "Negative", "unit": "" },
+    { "name": "Anti-Glomerular Basement Membrane Antibody", "normalRange": "Negative", "unit": "" },
+    { "name": "Anti-Thyroid Peroxidase", "normalRange": "Negative", "unit": "" },
+    { "name": "Anti-Thyroglobulin", "normalRange": "Negative", "unit": "" }
   ]
 };
