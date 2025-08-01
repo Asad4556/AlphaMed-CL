@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Alpha-Med Clinical Laboratory</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Alpha-Med Clinical Laboratory</h1>
+        <form id="patientForm">
+            <input type="text" id="name" placeholder="Patient Name" required>
+            <input type="text" id="cnic" placeholder="CNIC" required>
+            <input type="text" id="phone" placeholder="Phone Number" required>
+            <input type="number" id="age" placeholder="Age" required>
+            <select id="department" required>
+                <option value="">Select Department</option>
+                <option value="Hematology">Hematology</option>
+                <option value="Serology">Serology</option>
+                <option value="Histopathology">Histopathology</option>
+                <option value="Microbiology">Microbiology</option>
+                <option value="Biochemistry">Biochemistry</option>
+                <option value="Culture Tests">Culture Tests</option>
+                <option value="Special Chemistry Tests">Special Chemistry Tests</option>
+                <option value="Molecular Biology">Molecular Biology</option>
+                <option value="Blood Banking">Blood Banking</option>
+            </select>
+            <select id="test" required></select>
+            <button type="submit">Generate Report</button>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

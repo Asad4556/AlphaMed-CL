@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Patient Report</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container" id="reportContainer">
+        <h1>Alpha-Med Clinical Laboratory</h1>
+        <svg id="barcode"></svg>
+        <div id="reportContent"></div>
+        <button onclick="window.print()">Print Report</button>
+    </div>
+
+    <script>
+        const patient = JSON.parse(localStorage.getItem("lastPatient"));
+        const report = document.getElementById("reportContent");
+        report.innerHTML = `
+            <p><strong>Name:</strong> ${patient.name}</p>
+            <p><strong>CNIC:</strong> ${patient.cnic}</p>
+            <p><strong>Phone:</strong> ${patient.phone}</p>
+            <p><strong>Age:</strong> ${patient.age}</p>
+            <p><strong>MRN:</strong> ${patient.mrn}</p>
+            <p><strong>Department:</strong> ${patient.department}</p>
+            <p><strong>Test:</strong> ${patient.test}</p>
+        `;
+        JsBarcode("#barcode", patient.mrn, {
+            format: "CODE128",
+            width: 2,
+            height: 40,
+            displayValue: true
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+</body>
+</html>
