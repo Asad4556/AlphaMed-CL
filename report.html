@@ -2,80 +2,89 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Patient Report - Alpha-Med Lab</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Alpha-Med Clinical Laboratory - Patient Report</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 </head>
-<body onload="loadReport()">
-  <div class="report-container">
-    <div class="report-header">
-      <div class="qr-side">
-        <canvas id="qr"></canvas>
-      </div>
-      <div class="center-lab-title">
-        <h1>Alpha-Med Clinical Laboratory</h1>
-        <p class="subtitle">Trusted Medical Diagnostics</p>
-      </div>
-      <div class="logo-side">
-        <img src="logo.png" alt="Lab Logo" class="lab-logo" />
-      </div>
-    </div>
+<body>
+  <div class="container">
+    <header>
+      <img src="logo.png" alt="Lab Logo" class="lab-logo" />
+      <h1>Alpha-Med Clinical Laboratory</h1>
+      <p>Accredited Clinical Diagnostic Laboratory</p>
+    </header>
 
-    <div class="patient-info">
-      <p><strong>Name:</strong> <span id="name"></span></p>
-      <p><strong>CNIC:</strong> <span id="cnic"></span></p>
-      <p><strong>Phone:</strong> <span id="phone"></span></p>
-      <p><strong>Age:</strong> <span id="age"></span></p>
-      <p><strong>MRN:</strong> <span id="mrn"></span></p>
-    </div>
+    <section id="reportSection">
+      <h2>Patient Report</h2>
+      <div id="reportContent"></div>
+    </section>
 
-    <div class="test-results">
-      <h3>Test Results</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Test</th>
-            <th>Result</th>
-            <th>Normal Range</th>
-            <th>Unit</th>
-          </tr>
-        </thead>
-        <tbody id="test-body"></tbody>
-      </table>
-    </div>
-
-    <div class="footer">
-      <p>Generated on: <span id="date"></span></p>
-      <p class="watermark">Alpha-Med Clinical Laboratory</p>
-    </div>
+    <button onclick="window.print()" class="btn">Print Report</button>
   </div>
 
   <script>
-    function loadReport() {
-      const report = JSON.parse(localStorage.getItem("lastReport"));
-      if (!report) return;
+    const reportContent = document.getElementById('reportContent');
 
-      document.getElementById("name").textContent = report.name;
-      document.getElementById("cnic").textContent = report.cnic;
-      document.getElementById("phone").textContent = report.phone;
-      document.getElementById("age").textContent = report.age;
-      document.getElementById("mrn").textContent = report.mrn;
-      document.getElementById("date").textContent = new Date().toLocaleDateString();
+    // Get all reports from localStorage
+    const reports = JSON.parse(localStorage.getItem('patientReports')) || [];
 
-      const tbody = document.getElementById("test-body");
-      report.tests.forEach(test => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${test.name}</td>
-          <td>${test.result}</td>
-          <td>${test.normalRange}</td>
-          <td>${test.unit || "-"}</td>
+    if (reports.length === 0) {
+      reportContent.innerHTML = "<p>No reports found.</p>";
+    } else {
+      // Show the last saved report (you can change logic as needed)
+      const report = reports[reports.length - 1];
+
+      let html = `
+        <div class="report-card">
+          <div class="report-header">
+            <img src="logo.png" alt="Lab Logo" class="report-logo" />
+            <div class="report-title">
+              <h3>Alpha-Med Clinical Laboratory</h3>
+              <p>Patient Report</p>
+            </div>
+            <div class="report-qr">${report.barcode}</div>
+          </div>
+
+          <div class="patient-info-report">
+            <p><strong>Name:</strong> ${report.name}</p>
+            <p><strong>CNIC:</strong> ${report.cnic}</p>
+            <p><strong>Phone:</strong> ${report.phone}</p>
+            <p><strong>Age:</strong> ${report.age}</p>
+            <p><strong>Department:</strong> ${report.department}</p>
+            <p><strong>MRN:</strong> ${report.mrn}</p>
+            <p><strong>Date:</strong> ${report.date}</p>
+          </div>
+
+          <table class="results-table">
+            <thead>
+              <tr>
+                <th>Test Name</th>
+                <th>Result</th>
+                <th>Normal Range</th>
+                <th>Unit</th>
+              </tr>
+            </thead>
+            <tbody>
+      `;
+
+      report.results.forEach(r => {
+        html += `
+          <tr>
+            <td>${r.testName}</td>
+            <td>${r.result}</td>
+            <td>${r.normalRange}</td>
+            <td>${r.unit}</td>
+          </tr>
         `;
-        tbody.appendChild(tr);
       });
 
-      QRCode.toCanvas(document.getElementById("qr"), report.mrn, { width: 100 });
+      html += `
+            </tbody>
+          </table>
+        </div>
+      `;
+
+      reportContent.innerHTML = html;
     }
   </script>
 </body>
