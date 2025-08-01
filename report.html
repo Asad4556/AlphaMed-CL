@@ -5,6 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Alpha-Med Clinical Laboratory - Patient Report</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <style>
+    .low { color: blue; font-weight: bold; }
+    .high { color: red; font-weight: bold; }
+    .normal { color: green; font-weight: bold; }
+    .search-box {
+      margin: 20px 0;
+      text-align: center;
+    }
+    .search-box input {
+      padding: 8px;
+      width: 50%;
+      font-size: 16px;
+    }
+    .verified-note {
+      text-align: center;
+      margin-top: 30px;
+      font-style: italic;
+      color: #555;
+    }
+    #qrCanvas {
+      display: block;
+      margin: 20px auto;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -16,7 +41,14 @@
 
     <section id="reportSection">
       <h2>Patient Report</h2>
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search test by name..." />
+      </div>
       <div id="reportContent"></div>
+      <canvas id="qrCanvas"></canvas>
+      <div class="verified-note">
+        *** This report is electronically verified and requires no signature or stamp. ***
+      </div>
     </section>
 
     <button onclick="window.print()" class="btn">Print Report</button>
@@ -24,14 +56,11 @@
 
   <script>
     const reportContent = document.getElementById('reportContent');
-
-    // Get all reports from localStorage
     const reports = JSON.parse(localStorage.getItem('patientReports')) || [];
 
     if (reports.length === 0) {
       reportContent.innerHTML = "<p>No reports found.</p>";
     } else {
-      // Show the last saved report (you can change logic as needed)
       const report = reports[reports.length - 1];
 
       let html = `
@@ -42,7 +71,6 @@
               <h3>Alpha-Med Clinical Laboratory</h3>
               <p>Patient Report</p>
             </div>
-            <div class="report-qr">${report.barcode}</div>
           </div>
 
           <div class="patient-info-report">
@@ -55,7 +83,7 @@
             <p><strong>Date:</strong> ${report.date}</p>
           </div>
 
-          <table class="results-table">
+          <table class="results-table" id="resultsTable">
             <thead>
               <tr>
                 <th>Test Name</th>
@@ -67,11 +95,33 @@
             <tbody>
       `;
 
+      function parseRange(rangeStr) {
+        const match = rangeStr.match(/([\d.]+)\s*-\s*([\d.]+)/);
+        if (match) {
+          return { min: parseFloat(match[1]), max: parseFloat(match[2]) };
+        }
+        return null;
+      }
+
       report.results.forEach(r => {
+        const range = parseRange(r.normalRange);
+        const val = parseFloat(r.result);
+        let indicator = '';
+
+        if (range) {
+          if (val < range.min) {
+            indicator = '<span class="low">🔻 Low</span>';
+          } else if (val > range.max) {
+            indicator = '<span class="high">🔺 High</span>';
+          } else {
+            indicator = '<span class="normal">✅ Normal</span>';
+          }
+        }
+
         html += `
           <tr>
             <td>${r.testName}</td>
-            <td>${r.result}</td>
+            <td>${r.result} ${indicator}</td>
             <td>${r.normalRange}</td>
             <td>${r.unit}</td>
           </tr>
@@ -85,6 +135,22 @@
       `;
 
       reportContent.innerHTML = html;
+
+      // Generate QR Code
+      const qrCanvas = document.getElementById('qrCanvas');
+      QRCode.toCanvas(qrCanvas, `Patient: ${report.name}\nMRN: ${report.mrn}\nCNIC: ${report.cnic}`, { width: 100 }, function (error) {
+        if (error) console.error(error);
+      });
+
+      // Search Filter
+      document.getElementById("searchInput").addEventListener("keyup", function () {
+        const value = this.value.toLowerCase();
+        const rows = document.querySelectorAll("#resultsTable tbody tr");
+        rows.forEach(row => {
+          const testName = row.cells[0].textContent.toLowerCase();
+          row.style.display = testName.includes(value) ? "" : "none";
+        });
+      });
     }
   </script>
 </body>
