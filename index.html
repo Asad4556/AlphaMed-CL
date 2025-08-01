@@ -2,64 +2,57 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Alpha-Med Clinical Laboratory</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Alpha-Med Clinical Laboratory - Patient Report</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 </head>
 <body>
   <div class="container">
-    <header class="lab-header">
-      <img src="logo.png" alt="Lab Logo" class="lab-logo"/>
-      <div class="lab-name">Alpha-Med Clinical Laboratory</div>
-      <svg id="barcode"></svg>
+    <header>
+      <img src="logo.png" alt="Lab Logo" class="lab-logo" />
+      <h1>Alpha-Med Clinical Laboratory</h1>
+      <p>Accredited Clinical Diagnostic Laboratory</p>
     </header>
 
-    <section class="form-section">
+    <section class="patient-info">
       <h2>Patient Details</h2>
-      <form id="patient-form">
-        <input type="text" id="name" placeholder="Full Name" required />
-        <input type="text" id="cnic" placeholder="CNIC" required />
-        <input type="text" id="phone" placeholder="Phone Number" required />
-        <input type="number" id="age" placeholder="Age" required />
-        <input type="text" id="mrn" placeholder="MRN (Auto)" readonly />
-
-        <label for="department">Select Department:</label>
-        <select id="department" required>
-          <option value="">-- Select Department --</option>
-        </select>
-
-        <label for="test">Select Test:</label>
-        <select id="test">
-          <option value="">-- Select Test --</option>
-        </select>
-
-        <button type="button" id="add-test">Add Test</button>
+      <form id="patientForm">
+        <div class="form-group">
+          <label for="patientName">Name:</label>
+          <input type="text" id="patientName" name="patientName" required />
+        </div>
+        <div class="form-group">
+          <label for="patientCNIC">CNIC:</label>
+          <input type="text" id="patientCNIC" name="patientCNIC" pattern="\d{5}-\d{7}-\d{1}" placeholder="12345-1234567-1" required />
+        </div>
+        <div class="form-group">
+          <label for="patientPhone">Phone Number:</label>
+          <input type="tel" id="patientPhone" name="patientPhone" pattern="[0-9]{10,15}" placeholder="03001234567" required />
+        </div>
+        <div class="form-group">
+          <label for="patientAge">Age:</label>
+          <input type="number" id="patientAge" name="patientAge" min="0" max="120" required />
+        </div>
+        <div class="form-group">
+          <label for="departmentSelect">Select Department:</label>
+          <select id="departmentSelect" required>
+            <option value="">--Select Department--</option>
+          </select>
+        </div>
       </form>
     </section>
 
-    <section class="test-entry">
-      <h3>Selected Tests & Results</h3>
-      <table id="test-table">
-        <thead>
-          <tr>
-            <th>Test</th>
-            <th>Result</th>
-            <th>Normal Range</th>
-            <th>Unit</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+    <section class="test-selection" style="display:none;">
+      <h2>Select Tests & Enter Results</h2>
+      <form id="testForm">
+        <div id="testsContainer"></div>
+        <button type="submit" class="btn">Save Report</button>
+      </form>
     </section>
 
-    <button id="save-report" class="save-btn">Save & Generate Report</button>
-
-    <section class="report-list-section">
-      <h3>All Saved Reports</h3>
-      <ul id="report-list"></ul>
+    <section class="report-section" style="display:none;">
+      <h2>Generated Reports</h2>
+      <div id="reportsList"></div>
     </section>
   </div>
 
