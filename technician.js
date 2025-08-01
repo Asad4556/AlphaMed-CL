@@ -1,61 +1,70 @@
-// technician.js
-
 document.addEventListener("DOMContentLoaded", () => {
-  const departmentSelect = document.getElementById("department");
-  const testFieldsContainer = document.getElementById("testFields");
-  const reportForm = document.getElementById("reportForm");
+  const departmentSelect = document.getElementById("departmentSelect");
+  const testFieldsBody = document.querySelector("#testFields tbody");
 
-  // Populate department dropdown
-  const departments = Object.keys(testData);
-  departments.forEach((dept) => {
-    const option = document.createElement("option");
-    option.value = dept;
-    option.textContent = dept;
-    departmentSelect.appendChild(option);
+  const departmentTests = {
+    "Hematology": [
+      { name: "Hemoglobin", range: "13-17", unit: "g/dL" },
+      { name: "WBC Count", range: "4,000-11,000", unit: "cells/µL" },
+    ],
+    "Biochemistry": [
+      { name: "Glucose (Fasting)", range: "70-110", unit: "mg/dL" },
+      { name: "Cholesterol", range: "<200", unit: "mg/dL" },
+    ],
+    "Serology": [
+      { name: "CRP", range: "<5", unit: "mg/L" },
+      { name: "ASO", range: "<200", unit: "IU/mL" },
+    ]
+  };
+
+  function populateTestFields(dept) {
+    testFieldsBody.innerHTML = "";
+    if (!departmentTests[dept]) return;
+
+    departmentTests[dept].forEach(test => {
+      const row = document.createElement("tr");
+
+      row.innerHTML = `
+        <td>${test.name}</td>
+        <td><input type="text" class="resultField" placeholder="Result" /></td>
+        <td>${test.range}</td>
+        <td>${test.unit}</td>
+      `;
+
+      testFieldsBody.appendChild(row);
+    });
+  }
+
+  departmentSelect.addEventListener("change", (e) => {
+    const selectedDept = e.target.value;
+    populateTestFields(selectedDept);
   });
 
-  departmentSelect.addEventListener("change", () => {
-    const selectedDept = departmentSelect.value;
-    testFieldsContainer.innerHTML = "";
-    if (selectedDept && testData[selectedDept]) {
-      testData[selectedDept].forEach((test) => {
-        const div = document.createElement("div");
-        div.classList.add("test-input");
-        div.innerHTML = `
-          <label>${test.name} (${test.normalRange}) [${test.unit}]</label>
-          <input type="text" id="result-${test.id}" placeholder="Enter result">
-        `;
-        testFieldsContainer.appendChild(div);
-      });
-    }
-  });
+  document.getElementById("saveReportBtn").addEventListener("click", () => {
+    const name = document.getElementById("patientName").value.trim();
+    const cnic = document.getElementById("patientCnic").value.trim();
+    const phone = document.getElementById("patientPhone").value.trim();
+    const age = document.getElementById("patientAge").value.trim();
+    const department = document.getElementById("departmentSelect").value;
+    const mrn = document.getElementById("patientMrn").value.trim();
+    const date = document.getElementById("patientDate").value;
 
-  reportForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    const name = document.getElementById("name").value;
-    const cnic = document.getElementById("cnic").value;
-    const phone = document.getElementById("phone").value;
-    const age = document.getElementById("age").value;
-    const department = departmentSelect.value;
-    const mrn = document.getElementById("mrn").value;
-    const date = document.getElementById("date").value;
-    const results = [];
-
-    if (!department || !testData[department]) {
-      alert("Please select a valid department.");
+    if (!name || !cnic || !phone || !age || !mrn || !date) {
+      alert("Please fill out patient information completely.");
       return;
     }
 
-    testData[department].forEach((test) => {
-      const resultValue = document.getElementById(`result-${test.id}`).value;
-      if (resultValue.trim() !== "") {
-        results.push({
-          testName: test.name,
-          result: resultValue,
-          normalRange: test.normalRange,
-          unit: test.unit
-        });
+    const rows = document.querySelectorAll("#testFields tbody tr");
+    const results = [];
+
+    rows.forEach(row => {
+      const testName = row.children[0].textContent;
+      const result = row.querySelector(".resultField").value.trim();
+      const normalRange = row.children[2].textContent;
+      const unit = row.children[3].textContent;
+
+      if (result !== "") {
+        results.push({ testName, result, normalRange, unit });
       }
     });
 
@@ -64,7 +73,10 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const barcode = `<img src='https://api.qrserver.com/v1/create-qr-code/?size=70x70&data=${cnic}-${mrn}' alt='QR Code' />`;
+    const qr = new QRious({
+      value: `MRN:${mrn} - ${name}`,
+      size: 100
+    });
 
     const report = {
       name,
@@ -75,15 +87,14 @@ document.addEventListener("DOMContentLoaded", () => {
       mrn,
       date,
       results,
-      barcode
+      barcode: `<img src="${qr.toDataURL()}" width="80"/>`
     };
 
-    const savedReports = JSON.parse(localStorage.getItem("patientReports")) || [];
-    savedReports.push(report);
-    localStorage.setItem("patientReports", JSON.stringify(savedReports));
+    const reports = JSON.parse(localStorage.getItem("patientReports")) || [];
+    reports.push(report);
+    localStorage.setItem("patientReports", JSON.stringify(reports));
 
     alert("Report saved successfully!");
-    reportForm.reset();
-    testFieldsContainer.innerHTML = "";
+    location.reload();
   });
 });
