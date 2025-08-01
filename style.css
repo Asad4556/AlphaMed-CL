@@ -1,137 +1,160 @@
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #f9f9f9;
+/* General Reset */
+* {
   margin: 0;
-  padding: 20px;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Body Styling */
+body {
+  background: #f5f7fa;
   color: #333;
-}
-
-form {
-  background: #ffffff;
   padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  margin-bottom: 40px;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
-form h2 {
-  text-align: center;
-  color: #444;
-}
-
-input, select {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0 15px 0;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
-
-.test-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+/* Headings */
+h1, h2, h3 {
+  color: #222;
   margin-bottom: 10px;
 }
 
-.test-row label {
-  flex: 1;
+/* Container */
+.container {
+  max-width: 900px;
+  margin: auto;
+  background: #fff;
+  padding: 30px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.08);
+  border-radius: 12px;
 }
 
-.test-row input {
-  flex: 1;
+/* Form Fields */
+form label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
 }
 
+form input, form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border 0.3s;
+}
+
+form input:focus, form select:focus {
+  border-color: #4a90e2;
+  outline: none;
+}
+
+/* Button */
 button {
-  background-color: #3b82f6;
-  color: white;
-  padding: 12px 20px;
+  background-color: #4a90e2;
+  color: #fff;
+  padding: 10px 18px;
   border: none;
   border-radius: 6px;
-  font-size: 16px;
   cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
 }
 
 button:hover {
-  background-color: #2563eb;
+  background-color: #357abd;
 }
 
-/* Report Styling */
-#reportContainer {
-  background: #ffffff;
+/* Test Entries */
+.test-entry {
+  background: #f0f4f8;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border-left: 5px solid #4a90e2;
+}
+
+/* Report Cards */
+.report-card {
+  background: #e9f0f6;
+  border-left: 4px solid #4a90e2;
+  padding: 10px 15px;
+  margin: 10px 0;
+  border-radius: 6px;
+}
+
+/* Print Report Page */
+.report-wrapper {
+  background: #fff;
   padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0,0,0,0.15);
   max-width: 850px;
   margin: auto;
-  margin-top: 40px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.07);
+  position: relative;
 }
 
 .report-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid #ccc;
-  padding-bottom: 15px;
-  margin-bottom: 15px;
+  margin-bottom: 25px;
+}
+
+.report-header img {
+  height: 80px;
 }
 
 .lab-name {
-  font-size: 24px;
-  font-weight: bold;
   text-align: center;
   flex: 1;
-  color: #1f2937;
+  font-size: 24px;
+  font-weight: bold;
+  color: #4a90e2;
 }
 
-.logo-left, .qr-right {
-  width: 100px;
-  height: auto;
+.report-details {
+  margin-bottom: 30px;
+  font-size: 16px;
+  line-height: 1.6;
 }
 
-.patient-info p {
-  margin: 4px 0;
-  font-size: 14px;
-}
-
-.test-report {
+.report-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
+  margin-bottom: 30px;
 }
 
-.test-report th, .test-report td {
-  border: 1px solid #ddd;
+.report-table th, .report-table td {
+  border: 1px solid #aaa;
   padding: 10px;
-  text-align: left;
-  font-size: 14px;
+  text-align: center;
 }
 
-.test-report th {
-  background-color: #e5e7eb;
-  font-weight: bold;
+.report-table th {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.qr-code {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
 }
 
 @media print {
-  button {
-    display: none;
-  }
-
   body {
     background: white;
-    color: black;
   }
 
-  #reportContainer {
+  .report-wrapper {
     box-shadow: none;
     border: none;
   }
 
-  form {
+  button, .no-print {
     display: none;
   }
 }
