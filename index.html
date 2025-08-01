@@ -8,7 +8,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>Alpha-Med Clinical Laboratory</h1>
+    <h1 class="lab-title">Alpha-Med Clinical Laboratory</h1>
 
     <form id="patientForm">
       <input type="text" id="name" placeholder="Patient Name" required />
@@ -29,9 +29,7 @@
         <option value="Blood Banking">Blood Banking</option>
       </select>
 
-      <select id="test" required>
-        <option value="">Select Test</option>
-      </select>
+      <div id="testsContainer"></div>
 
       <button type="submit">Generate Report</button>
     </form>
