@@ -2,46 +2,73 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Patient Report – Alpha-Med</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Patient Lab Report</title>
+  <link rel="stylesheet" href="style.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
 </head>
 <body>
-  <div class="container" id="reportContainer">
-    <h1>Alpha-Med Clinical Laboratory</h1>
-    
-    <svg id="barcode"></svg>
 
-    <div id="reportContent"></div>
-
-    <button onclick="window.print()">🖨️ Print Report</button>
+<div id="reportContainer">
+  <div class="report-header">
+    <img src="logo.png" alt="Lab Logo" class="logo-left" />
+    <div class="lab-name">Alpha-Med Clinical Laboratory</div>
+    <canvas id="qrCode" class="qr-right"></canvas>
   </div>
 
-  <script>
-    const patient = JSON.parse(localStorage.getItem("lastPatient"));
+  <div class="patient-info" id="patientInfo">
+    <!-- Filled dynamically -->
+  </div>
 
-    if (!patient) {
-      document.getElementById("reportContent").innerHTML = "<p>No report found.</p>";
-    } else {
-      const report = document.getElementById("reportContent");
-      report.innerHTML = `
-        <p><strong>Name:</strong> ${patient.name}</p>
-        <p><strong>CNIC:</strong> ${patient.cnic}</p>
-        <p><strong>Phone:</strong> ${patient.phone}</p>
-        <p><strong>Age:</strong> ${patient.age}</p>
-        <p><strong>MRN:</strong> ${patient.mrn}</p>
-        <p><strong>Department:</strong> ${patient.department}</p>
-        <p><strong>Test:</strong> ${patient.test}</p>
-      `;
+  <table class="test-report" id="testResults">
+    <thead>
+      <tr>
+        <th>Test Name</th>
+        <th>Result</th>
+        <th>Normal Range</th>
+        <th>Unit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Test rows injected here -->
+    </tbody>
+  </table>
 
-      JsBarcode("#barcode", patient.mrn, {
-        format: "CODE128",
-        lineColor: "#000",
-        width: 2,
-        height: 40,
-        displayValue: true
-      });
-    }
-  </script>
+  <br/>
+  <button onclick="window.print()">🖨️ Print Report</button>
+</div>
+
+<script>
+  const patient = JSON.parse(localStorage.getItem("lastPatient")) || {};
+  const testResults = JSON.parse(localStorage.getItem("lastResults")) || [];
+
+  document.getElementById("patientInfo").innerHTML = `
+    <p><strong>Patient Name:</strong> ${patient.name}</p>
+    <p><strong>CNIC:</strong> ${patient.cnic}</p>
+    <p><strong>Phone:</strong> ${patient.phone}</p>
+    <p><strong>Age:</strong> ${patient.age}</p>
+    <p><strong>MRN:</strong> ${patient.mrn}</p>
+    <p><strong>Department:</strong> ${patient.department}</p>
+  `;
+
+  const tbody = document.querySelector("#testResults tbody");
+  testResults.forEach(test => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${test.name}</td>
+      <td>${test.result || '-'}</td>
+      <td>${test.normalRange || '-'}</td>
+      <td>${test.unit || ''}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  const qr = new QRious({
+    element: document.getElementById('qrCode'),
+    value: `MRN: ${patient.mrn}, Name: ${patient.name}`,
+    size: 100,
+  });
+</script>
+
 </body>
 </html>
